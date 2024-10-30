@@ -1,0 +1,40 @@
+services:
+
+  worldlineop.shopping_cart.presenter:
+    class: 'WorldlineOP\PrestaShop\Presenter\ShoppingCartPresenter'
+    public: true
+
+  worldlineop.payment_request.builder:
+    class: 'WorldlineOP\PrestaShop\Builder\PaymentRequestBuilder'
+    public: true
+    arguments:
+      - '@worldlineop.settings'
+      - '@worldlineop.module'
+      - '@worldlineop.context'
+      - '@worldlineop.shopping_cart.presenter'
+
+  worldlineop.hosted_payment_request.builder:
+    class: 'WorldlineOP\PrestaShop\Builder\HostedPaymentRequestBuilder'
+    public: true
+    arguments:
+      - '@worldlineop.settings'
+      - '@worldlineop.module'
+      - '@worldlineop.context'
+      - '@worldlineop.shopping_cart.presenter'
+
+  worldlineop.payment_request.director:
+    class: 'WorldlineOP\PrestaShop\Builder\PaymentRequestDirector'
+    public: true
+    calls:
+      - method: setBuilder
+        arguments:
+          - '@worldlineop.payment_request.builder'
+
+  worldlineop.hosted_payment_request.director:
+    class: 'WorldlineOP\PrestaShop\Builder\PaymentRequestDirector'
+    public: true
+    calls:
+      - method: setBuilder
+        arguments:
+          - '@worldlineop.hosted_payment_request.builder'
+
