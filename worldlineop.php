@@ -18,6 +18,8 @@ require_once 'vendor/autoload.php';
 
 use Monolog\Logger;
 use PrestaShop\ModuleLibServiceContainer\DependencyInjection\ServiceContainer;
+use WorldlineOP\PrestaShop\Utils\Tools as ToolsWorldline;
+
 
 /**
  * Class Worldlineop
@@ -40,7 +42,7 @@ class Worldlineop extends PaymentModule
     {
         $this->name = 'worldlineop';
         $this->author = 'Worldline Online Payments';
-        $this->version = '2.0.0';
+        $this->version = '2.0.1';
         $this->tab = 'payments_gateways';
         $this->module_key = '089d13d0218de8085259e542483f4438';
         $this->currencies = true;
@@ -92,11 +94,24 @@ class Worldlineop extends PaymentModule
      */
     public function uninstall()
     {
-        Configuration::deleteByName('WORLDLINEOP_ACCOUNT_SETTINGS');
-        Configuration::deleteByName('WORLDLINEOP_ADVANCED_SETTINGS');
-        Configuration::deleteByName('WORLDLINEOP_PAYMENT_METHODS_SETTINGS');
+        if (parent::uninstall()) {
+            Configuration::deleteByName('WORLDLINEOP_ACCOUNT_SETTINGS');
+            Configuration::deleteByName('WORLDLINEOP_ADVANCED_SETTINGS');
+            Configuration::deleteByName('WORLDLINEOP_PAYMENT_METHODS_SETTINGS');
+            ToolsWorldline::removeSymfonyCache();
+            return true;
+        }
 
-        return parent::uninstall();
+        return false;
+    }
+
+    public function disable($force_all = false)
+    {
+        if (parent::disable($force_all)) {
+            ToolsWorldline::removeSymfonyCache();
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -382,7 +397,7 @@ class Worldlineop extends PaymentModule
             'worldlineopGCTypeFoodDrink' => \WorldlineOP\PrestaShop\Builder\HostedPaymentRequestBuilder::GIFT_CARD_PRODUCT_TYPE_FOOD_DRINK,
             'worldlineopGCTypeHomeGarden' => \WorldlineOP\PrestaShop\Builder\HostedPaymentRequestBuilder::GIFT_CARD_PRODUCT_TYPE_HOME_GARDEN,
             'worldlineopGCTypeGiftFlowers' => \WorldlineOP\PrestaShop\Builder\HostedPaymentRequestBuilder::GIFT_CARD_PRODUCT_TYPE_GIFT_FLOWERS,
-            'worldlineopGCSelectedType' => \WorldlineOP\PrestaShop\Utils\Tools::getGiftCardTypeByIdProduct($idProduct),
+            'worldlineopGCSelectedType' => Tools::getGiftCardTypeByIdProduct($idProduct),
         ]);
 
         return $this->display(dirname(__FILE__), 'views/templates/admin/hookDisplayAdminProductsExtra.tpl');

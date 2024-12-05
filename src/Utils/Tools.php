@@ -297,4 +297,23 @@ class Tools
 
         return \Db::getInstance()->getValue($dbQuery) ?: HostedPaymentRequestBuilder::GIFT_CARD_PRODUCT_TYPE_NONE;
     }
+
+    /**
+     * @param string|null $env
+     * @return void
+     * @throws \PrestaShopException
+     */
+    public static function removeSymfonyCache($env = null)
+    {
+        if (null === $env) {
+            $env = _PS_ENV_;
+        }
+        $dir = _PS_ROOT_DIR_ . '/var/cache/' . $env .'/';
+        register_shutdown_function(function () use ($dir) {
+            $fs = new Filesystem();
+            $fs->remove($dir);
+            \Hook::exec('actionClearSf2Cache');
+        });
+    }
+
 }
