@@ -14,11 +14,11 @@
 
 <h1>
   {l s='What\'s new in version' mod='worldlineop'}
-  2.0.2
+  2.0.3
 </h1>
 <br>
 <ul>
-  <li>{l s='Fix issue with submit button not being deactivated when card fields are not added on checkout' mod='worldlineop'}</li>
+  <li>{l s='Add 3DS exemption types to the plugin' mod='worldlineop'}</li>
 </ul>
 <br>
 <hr>

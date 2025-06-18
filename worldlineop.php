@@ -42,7 +42,7 @@ class Worldlineop extends PaymentModule
     {
         $this->name = 'worldlineop';
         $this->author = 'Worldline Online Payments';
-        $this->version = '2.0.2';
+        $this->version = '2.0.3';
         $this->tab = 'payments_gateways';
         $this->module_key = '089d13d0218de8085259e542483f4438';
         $this->currencies = true;

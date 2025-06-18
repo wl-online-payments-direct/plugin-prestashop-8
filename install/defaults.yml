@@ -95,6 +95,8 @@ configuration:
     groupCardPaymentOptions: 0
     threeDSExempted: 0
     enforce3DS: 0
+    threeDSExemptedType: ''
+    threeDSExemptedValue: 0
     surchargingEnabled: 0
     displayWhatsNew: 0
   paymentMethodsSettings:
@@ -121,4 +123,3 @@ configuration:
     iframeLogoFilename: 'cb_visa_mc_amex.svg'
     redirectPaymentMethods: []
     iframePaymentMethods: []
-
