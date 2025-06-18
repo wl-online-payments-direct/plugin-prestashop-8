@@ -17,6 +17,7 @@ namespace WorldlineOP\PrestaShop\Configuration\Entity;
 if (!defined('_PS_VERSION_')) {
     exit;
 }
+
 /**
  * Class AdvancedSettings
  */
@@ -54,6 +55,12 @@ class AdvancedSettings
 
     /** @var bool */
     public $enforce3DS;
+
+    /** @var string */
+    public $threeDSExemptedType;
+
+    /** @var string */
+    public $threeDSExemptedValue;
 
     /** @var bool */
     public $surchargingEnabled;
