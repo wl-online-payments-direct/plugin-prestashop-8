@@ -14,11 +14,11 @@
 
 <h1>
   {l s='What\'s new in version' mod='worldlineop'}
-  2.0.6
+  2.0.7
 </h1>
 <br>
 <ul>
-  <li>{l s='Fix potential issues with missing payment transaction form Worldline DB table due to the DB query caching or using read DB replica.' mod='worldlineop'}</li>
+  <li>{l s='Fix issue when order is paid using GooglePay and fails to render in the backoffice' mod='worldlineop'}</li>
 </ul>
 <br>
 <hr>
