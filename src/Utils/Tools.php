@@ -251,7 +251,8 @@ class Tools
             ->from('orders')
             ->where('id_cart = ' . (int) $idCart);
 
-        $results = \Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($dbQuery);
+        // Always get order ids from master and make sure that DB query cache is not affecting the query outcome
+        $results = \Db::getInstance()->executeS($dbQuery, true, false);
         if (!$results) {
             return false;
         }
