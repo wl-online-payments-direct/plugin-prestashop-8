@@ -20,7 +20,6 @@ use Monolog\Logger;
 use PrestaShop\ModuleLibServiceContainer\DependencyInjection\ServiceContainer;
 use WorldlineOP\PrestaShop\Utils\Tools as ToolsWorldline;
 
-
 /**
  * Class Worldlineop
  */
@@ -42,7 +41,7 @@ class Worldlineop extends PaymentModule
     {
         $this->name = 'worldlineop';
         $this->author = 'Worldline Online Payments';
-        $this->version = '2.0.7';
+        $this->version = '2.0.8';
         $this->tab = 'payments_gateways';
         $this->module_key = '089d13d0218de8085259e542483f4438';
         $this->currencies = true;
@@ -214,6 +213,7 @@ class Worldlineop extends PaymentModule
     {
         if (Tools::getValue('controller') == 'AdminWorldlineopConfiguration') {
             return '
+                <script type="text/javascript" src="' . $this->getPathUri() . 'views/js/translations.js"></script>
                 <script type="text/javascript" src="' . $this->getPathUri() . 'views/js/config.js"></script>
                 <script type="text/javascript" src="' . $this->getPathUri() . 'views/js/jquery.custom-file-input.js"></script>
             ';

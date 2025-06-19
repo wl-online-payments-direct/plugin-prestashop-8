@@ -467,7 +467,7 @@
             </div>
             <div class="col-lg-9 col-lg-offset-3 wl-margin-bottom-15">
               <div class="help-block">
-                {l s='When enabled, transactions with an order amount < exemption limit value will be exempted from 3DS' mod='worldlineop'}
+                {l s='When enabled, an exemption from 3DS will be requested for transactions with an order amount below the configured limit.' mod='worldlineop'}
                 <span></span>
               </div>
             </div>

@@ -240,7 +240,7 @@ $(document).ready(function () {
         if (helpTextExemptionLimit30 && helpTextExemptionLimit100) {
           exemptionLimitAmount = !isLimit30Selected ? 100 : exemptionLimitAmount;
           if (!helpTextExemptionLimitInvalid[0].innerText.includes(exemptionLimitAmount)) {
-            helpTextExemptionLimitInvalid[0].innerText = 'The amount entered is not within the allowed range of 0-' + exemptionLimitAmount + ' EUR.';
+            helpTextExemptionLimitInvalid[0].innerText = __('invalid_amount_limit', { amount: exemptionLimitAmount });
           }
           shownErrorMessage = !isLimit30Selected ? helpTextExemptionLimit100 : helpTextExemptionLimit30;
         }
