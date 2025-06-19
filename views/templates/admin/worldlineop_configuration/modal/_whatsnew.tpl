@@ -14,11 +14,11 @@
 
 <h1>
   {l s='What\'s new in version' mod='worldlineop'}
-  2.0.3
+  2.0.4
 </h1>
 <br>
 <ul>
-  <li>{l s='Add 3DS exemption types to the plugin' mod='worldlineop'}</li>
+  <li>{l s='Update plugin translations' mod='worldlineop'}</li>
 </ul>
 <br>
 <hr>
