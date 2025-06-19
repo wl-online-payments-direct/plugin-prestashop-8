@@ -14,11 +14,12 @@
 
 <h1>
   {l s='What\'s new in version' mod='worldlineop'}
-  2.0.7
+  2.0.8
 </h1>
 <br>
 <ul>
-  <li>{l s='Fix issue when order is paid using GooglePay and fails to render in the backoffice' mod='worldlineop'}</li>
+  <li>{l s='Mask Payment API and Webhook secrets' mod='worldlineop'}</li>
+  <li>{l s='Update plugin translations' mod='worldlineop'}</li>
 </ul>
 <br>
 <hr>
