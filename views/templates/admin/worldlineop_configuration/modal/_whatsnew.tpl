@@ -14,11 +14,11 @@
 
 <h1>
   {l s='What\'s new in version' mod='worldlineop'}
-  2.0.4
+  2.0.5
 </h1>
 <br>
 <ul>
-  <li>{l s='Update plugin translations' mod='worldlineop'}</li>
+  <li>{l s='Add compatibility with PrestaShop 8.2' mod='worldlineop'}</li>
 </ul>
 <br>
 <hr>
