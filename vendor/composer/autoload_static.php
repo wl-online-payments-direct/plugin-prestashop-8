@@ -17,193 +17,193 @@ class ComposerStaticInit3c653371edbd38b64b95e3a48776d76f
     );
 
     public static $prefixLengthsPsr4 = array (
-        'p' => 
-        array (
-            'phpDocumentor\\Reflection\\' => 25,
-        ),
-        'W' => 
-        array (
-            'WorldlineOP\\PrestaShop\\' => 23,
-            'Webmozart\\Assert\\' => 17,
-        ),
-        'S' => 
-        array (
-            'Symfony\\Polyfill\\Php80\\' => 23,
-            'Symfony\\Polyfill\\Mbstring\\' => 26,
-            'Symfony\\Polyfill\\Intl\\Normalizer\\' => 33,
-            'Symfony\\Polyfill\\Intl\\Grapheme\\' => 31,
-            'Symfony\\Polyfill\\Ctype\\' => 23,
-            'Symfony\\Contracts\\Translation\\' => 30,
-            'Symfony\\Component\\Yaml\\' => 23,
-            'Symfony\\Component\\Validator\\' => 28,
-            'Symfony\\Component\\String\\' => 25,
-            'Symfony\\Component\\Serializer\\' => 29,
-            'Symfony\\Component\\PropertyInfo\\' => 31,
-            'Symfony\\Component\\PropertyAccess\\' => 33,
-            'Symfony\\Component\\OptionsResolver\\' => 34,
-            'Symfony\\Component\\Lock\\' => 23,
-            'Symfony\\Component\\Inflector\\' => 28,
-            'Symfony\\Component\\Filesystem\\' => 29,
-        ),
-        'P' => 
-        array (
-            'Psr\\Log\\' => 8,
-            'PrestaShop\\ModuleLibServiceContainer\\' => 37,
-            'PrestaShop\\ModuleLibCacheDirectoryProvider\\' => 43,
-            'PrestaShop\\Decimal\\' => 19,
-            'PHPStan\\PhpDocParser\\' => 21,
-        ),
-        'O' => 
-        array (
-            'OnlinePayments\\Sdk\\' => 19,
-        ),
-        'M' => 
-        array (
-            'Monolog\\' => 8,
-        ),
-        'D' => 
-        array (
-            'Doctrine\\Deprecations\\' => 22,
-        ),
-        'A' => 
-        array (
-            'Alcohol\\' => 8,
-        ),
+        'p' =>
+            array (
+                'phpDocumentor\\Reflection\\' => 25,
+            ),
+        'W' =>
+            array (
+                'WorldlineOP\\PrestaShop\\' => 23,
+                'Webmozart\\Assert\\' => 17,
+            ),
+        'S' =>
+            array (
+                'Symfony\\Polyfill\\Php80\\' => 23,
+                'Symfony\\Polyfill\\Mbstring\\' => 26,
+                'Symfony\\Polyfill\\Intl\\Normalizer\\' => 33,
+                'Symfony\\Polyfill\\Intl\\Grapheme\\' => 31,
+                'Symfony\\Polyfill\\Ctype\\' => 23,
+                'Symfony\\Contracts\\Translation\\' => 30,
+                'Symfony\\Component\\Yaml\\' => 23,
+                'Symfony\\Component\\Validator\\' => 28,
+                'Symfony\\Component\\String\\' => 25,
+                'Symfony\\Component\\Serializer\\' => 29,
+                'Symfony\\Component\\PropertyInfo\\' => 31,
+                'Symfony\\Component\\PropertyAccess\\' => 33,
+                'Symfony\\Component\\OptionsResolver\\' => 34,
+                'Symfony\\Component\\Lock\\' => 23,
+                'Symfony\\Component\\Inflector\\' => 28,
+                'Symfony\\Component\\Filesystem\\' => 29,
+            ),
+        'P' =>
+            array (
+                'Psr\\Log\\' => 8,
+                'PrestaShop\\ModuleLibServiceContainer\\' => 37,
+                'PrestaShop\\ModuleLibCacheDirectoryProvider\\' => 43,
+                'PrestaShop\\Decimal\\' => 19,
+                'PHPStan\\PhpDocParser\\' => 21,
+            ),
+        'O' =>
+            array (
+                'OnlinePayments\\Sdk\\' => 19,
+            ),
+        'M' =>
+            array (
+                'Monolog\\' => 8,
+            ),
+        'D' =>
+            array (
+                'Doctrine\\Deprecations\\' => 22,
+            ),
+        'A' =>
+            array (
+                'Alcohol\\' => 8,
+            ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'phpDocumentor\\Reflection\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
-        ),
-        'WorldlineOP\\PrestaShop\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
-        ),
-        'Webmozart\\Assert\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/webmozart/assert/src',
-        ),
-        'Symfony\\Polyfill\\Php80\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
-        ),
-        'Symfony\\Polyfill\\Mbstring\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
-        ),
-        'Symfony\\Polyfill\\Intl\\Normalizer\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer',
-        ),
-        'Symfony\\Polyfill\\Intl\\Grapheme\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme',
-        ),
-        'Symfony\\Polyfill\\Ctype\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
-        ),
-        'Symfony\\Contracts\\Translation\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/translation-contracts',
-        ),
-        'Symfony\\Component\\Yaml\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/yaml',
-        ),
-        'Symfony\\Component\\Validator\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/validator',
-        ),
-        'Symfony\\Component\\String\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/string',
-        ),
-        'Symfony\\Component\\Serializer\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/serializer',
-        ),
-        'Symfony\\Component\\PropertyInfo\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/property-info',
-        ),
-        'Symfony\\Component\\PropertyAccess\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/property-access',
-        ),
-        'Symfony\\Component\\OptionsResolver\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/options-resolver',
-        ),
-        'Symfony\\Component\\Lock\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/lock',
-        ),
-        'Symfony\\Component\\Inflector\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/inflector',
-        ),
-        'Symfony\\Component\\Filesystem\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/filesystem',
-        ),
-        'Psr\\Log\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
-        ),
-        'PrestaShop\\ModuleLibServiceContainer\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/prestashop/module-lib-service-container/src',
-        ),
-        'PrestaShop\\ModuleLibCacheDirectoryProvider\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/prestashop/module-lib-cache-directory-provider/src',
-        ),
-        'PrestaShop\\Decimal\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/prestashop/decimal/src',
-        ),
-        'PHPStan\\PhpDocParser\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/phpstan/phpdoc-parser/src',
-        ),
-        'OnlinePayments\\Sdk\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/src/OnlinePayments/Sdk',
-            1 => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk',
-        ),
-        'Monolog\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
-        ),
-        'Doctrine\\Deprecations\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/doctrine/deprecations/lib/Doctrine/Deprecations',
-        ),
-        'Alcohol\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/alcohol/iso4217',
-        ),
+        'phpDocumentor\\Reflection\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
+                1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+                2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+            ),
+        'WorldlineOP\\PrestaShop\\' =>
+            array (
+                0 => __DIR__ . '/../..' . '/src',
+            ),
+        'Webmozart\\Assert\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/webmozart/assert/src',
+            ),
+        'Symfony\\Polyfill\\Php80\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
+            ),
+        'Symfony\\Polyfill\\Mbstring\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+            ),
+        'Symfony\\Polyfill\\Intl\\Normalizer\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer',
+            ),
+        'Symfony\\Polyfill\\Intl\\Grapheme\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme',
+            ),
+        'Symfony\\Polyfill\\Ctype\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+            ),
+        'Symfony\\Contracts\\Translation\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/symfony/translation-contracts',
+            ),
+        'Symfony\\Component\\Yaml\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/symfony/yaml',
+            ),
+        'Symfony\\Component\\Validator\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/symfony/validator',
+            ),
+        'Symfony\\Component\\String\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/symfony/string',
+            ),
+        'Symfony\\Component\\Serializer\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/symfony/serializer',
+            ),
+        'Symfony\\Component\\PropertyInfo\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/symfony/property-info',
+            ),
+        'Symfony\\Component\\PropertyAccess\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/symfony/property-access',
+            ),
+        'Symfony\\Component\\OptionsResolver\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/symfony/options-resolver',
+            ),
+        'Symfony\\Component\\Lock\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/symfony/lock',
+            ),
+        'Symfony\\Component\\Inflector\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/symfony/inflector',
+            ),
+        'Symfony\\Component\\Filesystem\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/symfony/filesystem',
+            ),
+        'Psr\\Log\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+            ),
+        'PrestaShop\\ModuleLibServiceContainer\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/prestashop/module-lib-service-container/src',
+            ),
+        'PrestaShop\\ModuleLibCacheDirectoryProvider\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/prestashop/module-lib-cache-directory-provider/src',
+            ),
+        'PrestaShop\\Decimal\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/prestashop/decimal/src',
+            ),
+        'PHPStan\\PhpDocParser\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/phpstan/phpdoc-parser/src',
+            ),
+        'OnlinePayments\\Sdk\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/src/OnlinePayments/Sdk',
+                1 => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk',
+            ),
+        'Monolog\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+            ),
+        'Doctrine\\Deprecations\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/doctrine/deprecations/lib/Doctrine/Deprecations',
+            ),
+        'Alcohol\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/alcohol/iso4217',
+            ),
     );
 
     public static $prefixesPsr0 = array (
-        'S' => 
-        array (
-            'SecurityLib' => 
+        'S' =>
             array (
-                0 => __DIR__ . '/..' . '/ircmaxell/security-lib/lib',
+                'SecurityLib' =>
+                    array (
+                        0 => __DIR__ . '/..' . '/ircmaxell/security-lib/lib',
+                    ),
             ),
-        ),
-        'R' => 
-        array (
-            'RandomLib' => 
+        'R' =>
             array (
-                0 => __DIR__ . '/..' . '/ircmaxell/random-lib/lib',
+                'RandomLib' =>
+                    array (
+                        0 => __DIR__ . '/..' . '/ircmaxell/random-lib/lib',
+                    ),
             ),
-        ),
     );
 
     public static $classMap = array (
@@ -335,9 +335,9 @@ class ComposerStaticInit3c653371edbd38b64b95e3a48776d76f
         'Monolog\\Test\\TestCase' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Test/TestCase.php',
         'Monolog\\Utils' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Utils.php',
         'Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php',
-        'OnlinePayments\\Sdk\\ApiException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/ApiException.php',
+        'OnlinePayments\\Sdk\\ApiException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/src/OnlinePayments/Sdk/ApiException.php',
         'OnlinePayments\\Sdk\\ApiResource' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/ApiResource.php',
-        'OnlinePayments\\Sdk\\AuthorizationException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/AuthorizationException.php',
+        'OnlinePayments\\Sdk\\AuthorizationException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/src/OnlinePayments/Sdk/AuthorizationException.php',
         'OnlinePayments\\Sdk\\BodyObfuscator' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/BodyObfuscator.php',
         'OnlinePayments\\Sdk\\CallContext' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/CallContext.php',
         'OnlinePayments\\Sdk\\Client' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/src/OnlinePayments/Sdk/Client.php',
@@ -350,9 +350,9 @@ class ComposerStaticInit3c653371edbd38b64b95e3a48776d76f
         'OnlinePayments\\Sdk\\Connection' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/Connection.php',
         'OnlinePayments\\Sdk\\ConnectionResponse' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/ConnectionResponse.php',
         'OnlinePayments\\Sdk\\DataObject' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/DataObject.php',
-        'OnlinePayments\\Sdk\\DeclinedPaymentException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/DeclinedPaymentException.php',
-        'OnlinePayments\\Sdk\\DeclinedPayoutException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/DeclinedPayoutException.php',
-        'OnlinePayments\\Sdk\\DeclinedRefundException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/DeclinedRefundException.php',
+        'OnlinePayments\\Sdk\\DeclinedPaymentException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/src/OnlinePayments/Sdk/DeclinedPaymentException.php',
+        'OnlinePayments\\Sdk\\DeclinedPayoutException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/src/OnlinePayments/Sdk/DeclinedPayoutException.php',
+        'OnlinePayments\\Sdk\\DeclinedRefundException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/src/OnlinePayments/Sdk/DeclinedRefundException.php',
         'OnlinePayments\\Sdk\\DefaultConnection' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/DefaultConnection.php',
         'OnlinePayments\\Sdk\\DefaultConnectionResponse' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/DefaultConnectionResponse.php',
         'OnlinePayments\\Sdk\\Domain\\APIError' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/src/OnlinePayments/Sdk/Domain/APIError.php',
@@ -590,7 +590,7 @@ class ComposerStaticInit3c653371edbd38b64b95e3a48776d76f
         'OnlinePayments\\Sdk\\HeaderObfuscator' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/HeaderObfuscator.php',
         'OnlinePayments\\Sdk\\HttpHeaderHelper' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/HttpHeaderHelper.php',
         'OnlinePayments\\Sdk\\HttpObfuscator' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/HttpObfuscator.php',
-        'OnlinePayments\\Sdk\\IdempotenceException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/IdempotenceException.php',
+        'OnlinePayments\\Sdk\\IdempotenceException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/src/OnlinePayments/Sdk/IdempotenceException.php',
         'OnlinePayments\\Sdk\\InvalidResponseException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/InvalidResponseException.php',
         'OnlinePayments\\Sdk\\Merchant\\HostedCheckout\\HostedCheckoutClient' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/src/OnlinePayments/Sdk/Merchant/HostedCheckout/HostedCheckoutClient.php',
         'OnlinePayments\\Sdk\\Merchant\\HostedCheckout\\HostedCheckoutClientInterface' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/src/OnlinePayments/Sdk/Merchant/HostedCheckout/HostedCheckoutClientInterface.php',
@@ -625,20 +625,20 @@ class ComposerStaticInit3c653371edbd38b64b95e3a48776d76f
         'OnlinePayments\\Sdk\\Merchant\\Tokens\\TokensClientInterface' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/src/OnlinePayments/Sdk/Merchant/Tokens/TokensClientInterface.php',
         'OnlinePayments\\Sdk\\PaymentPlatformException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/PaymentPlatformException.php',
         'OnlinePayments\\Sdk\\ProxyConfiguration' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/ProxyConfiguration.php',
-        'OnlinePayments\\Sdk\\ReferenceException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/ReferenceException.php',
+        'OnlinePayments\\Sdk\\ReferenceException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/src/OnlinePayments/Sdk/ReferenceException.php',
         'OnlinePayments\\Sdk\\RequestHeaderGenerator' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/RequestHeaderGenerator.php',
         'OnlinePayments\\Sdk\\RequestObject' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/RequestObject.php',
         'OnlinePayments\\Sdk\\ResourceLogger' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/ResourceLogger.php',
         'OnlinePayments\\Sdk\\ResponseBuilder' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/ResponseBuilder.php',
         'OnlinePayments\\Sdk\\ResponseClassMap' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/ResponseClassMap.php',
-        'OnlinePayments\\Sdk\\ResponseException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/ResponseException.php',
+        'OnlinePayments\\Sdk\\ResponseException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/src/OnlinePayments/Sdk/ResponseException.php',
         'OnlinePayments\\Sdk\\ResponseExceptionFactory' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/ResponseExceptionFactory.php',
         'OnlinePayments\\Sdk\\ResponseFactory' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/ResponseFactory.php',
         'OnlinePayments\\Sdk\\ResponseHeaderBuilder' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/ResponseHeaderBuilder.php',
         'OnlinePayments\\Sdk\\SensitiveValueObfuscator' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/SensitiveValueObfuscator.php',
         'OnlinePayments\\Sdk\\SplFileObjectLogger' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/SplFileObjectLogger.php',
         'OnlinePayments\\Sdk\\UuidGenerator' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/UuidGenerator.php',
-        'OnlinePayments\\Sdk\\ValidationException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/ValidationException.php',
+        'OnlinePayments\\Sdk\\ValidationException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/src/OnlinePayments/Sdk/ValidationException.php',
         'OnlinePayments\\Sdk\\ValueObfuscator' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/ValueObfuscator.php',
         'OnlinePayments\\Sdk\\Webhooks\\ApiVersionMismatchException' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/Webhooks/ApiVersionMismatchException.php',
         'OnlinePayments\\Sdk\\Webhooks\\InMemorySecretKeyStore' => __DIR__ . '/..' . '/wl-online-payments-direct/sdk-php/lib/OnlinePayments/Sdk/Webhooks/InMemorySecretKeyStore.php',

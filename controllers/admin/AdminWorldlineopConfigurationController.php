@@ -17,11 +17,11 @@ if (!defined('_PS_VERSION_')) {
 use OnlinePayments\Sdk\Client;
 use OnlinePayments\Sdk\Communicator;
 use OnlinePayments\Sdk\CommunicatorConfiguration;
-use OnlinePayments\Sdk\DefaultConnection;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use WorldlineOP\PrestaShop\Configuration\Entity\AccountSettings;
 use WorldlineOP\PrestaShop\Configuration\Entity\Settings;
 use WorldlineOP\PrestaShop\Exception\ExceptionList;
+use OnlinePayments\Sdk\Authentication\V1HmacAuthenticator;
 
 /**
  * Class AdminWorldlineopConfigurationController
@@ -167,14 +167,13 @@ class AdminWorldlineopConfigurationController extends ModuleAdminController
         $settings->accountSettings = $accountTested;
         $settings->advancedSettings = $savedSettings->advancedSettings;
         $settings = $settings->postLoading();
-        $connection = new DefaultConnection();
         $communicatorConfiguration = new CommunicatorConfiguration(
             $settings->credentials->apiKey,
             $settings->credentials->apiSecret,
             $settings->credentials->endpoint,
             'PrestaShop'
         );
-        $communicator = new Communicator($connection, $communicatorConfiguration);
+        $communicator = new Communicator($communicatorConfiguration, new V1HmacAuthenticator($communicatorConfiguration));
         $merchantClient = new Client($communicator);
 
         try {

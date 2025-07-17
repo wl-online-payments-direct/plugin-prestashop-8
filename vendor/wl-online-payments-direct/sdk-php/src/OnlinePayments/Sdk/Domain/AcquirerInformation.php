@@ -1,11 +1,9 @@
 <?php
 /*
- * This class was auto-generated.
+ * This file was automatically generated.
  */
-
 namespace OnlinePayments\Sdk\Domain;
 
-use OnlinePayments\Sdk\DataObject;
 use UnexpectedValueException;
 
 /**
@@ -13,13 +11,32 @@ use UnexpectedValueException;
  */
 class AcquirerInformation extends DataObject
 {
-    // Properties
+    /**
+     * @var AcquirerSelectionInformation
+     */
+    public $acquirerSelectionInformation = null;
+
     /**
      * @var string
      */
-    private $name;
+    public $name = null;
 
-    // Methods
+    /**
+     * @return AcquirerSelectionInformation
+     */
+    public function getAcquirerSelectionInformation()
+    {
+        return $this->acquirerSelectionInformation;
+    }
+
+    /**
+     * @param AcquirerSelectionInformation
+     */
+    public function setAcquirerSelectionInformation($value)
+    {
+        $this->acquirerSelectionInformation = $value;
+    }
+
     /**
      * @return string
      */
@@ -27,8 +44,9 @@ class AcquirerInformation extends DataObject
     {
         return $this->name;
     }
+
     /**
-     * @var string
+     * @param string
      */
     public function setName($value)
     {
@@ -41,7 +59,10 @@ class AcquirerInformation extends DataObject
     public function toObject()
     {
         $object = parent::toObject();
-        if ($this->name !== null) {
+        if (!is_null($this->acquirerSelectionInformation)) {
+            $object->acquirerSelectionInformation = $this->acquirerSelectionInformation->toObject();
+        }
+        if (!is_null($this->name)) {
             $object->name = $this->name;
         }
         return $object;
@@ -55,6 +76,13 @@ class AcquirerInformation extends DataObject
     public function fromObject($object)
     {
         parent::fromObject($object);
+        if (property_exists($object, 'acquirerSelectionInformation')) {
+            if (!is_object($object->acquirerSelectionInformation)) {
+                throw new UnexpectedValueException('value \'' . print_r($object->acquirerSelectionInformation, true) . '\' is not an object');
+            }
+            $value = new AcquirerSelectionInformation();
+            $this->acquirerSelectionInformation = $value->fromObject($object->acquirerSelectionInformation);
+        }
         if (property_exists($object, 'name')) {
             $this->name = $object->name;
         }

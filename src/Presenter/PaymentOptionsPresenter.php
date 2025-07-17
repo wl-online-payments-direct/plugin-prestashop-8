@@ -31,6 +31,7 @@ use Worldlineop;
 use WorldlineOP\PrestaShop\Configuration\Entity\Settings;
 use WorldlineOP\PrestaShop\Repository\TokenRepository;
 use WorldlineOP\PrestaShop\Utils\Tools;
+use WorldlineOP\PrestaShop\Builder\HostedPaymentRequestBuilder;
 
 /**
  * Class PaymentOptionsPresenter
@@ -38,6 +39,7 @@ use WorldlineOP\PrestaShop\Utils\Tools;
 class PaymentOptionsPresenter implements PresenterInterface
 {
     public const NO_SURCHARGE = 'NO_SURCHARGE';
+    public const MEALVOUCHER_PRODUCT_ID = 5402;
 
     /** @var Settings */
     private $settings;
@@ -125,6 +127,7 @@ class PaymentOptionsPresenter implements PresenterInterface
                 $logoPath = realpath($this->module->getLocalPath() . sprintf('views/img/payment_logos/%s.svg', $token->product_id));
                 $paymentOption = new PaymentOption();
                 //@formatter:off
+
                 $paymentOption
                     ->setAction($this->context->link->getModuleLink($this->module->name, 'redirect', ['action' => 'redirectExternal', 'ajax' => true, 'productId' => $token->product_id, 'tokenId' => $token->id]))
                     ->setCallToActionText(sprintf($this->module->l('Pay with my previously saved card %s', 'PaymentOptionsPresenter'), $token->card_number));
@@ -343,9 +346,62 @@ class PaymentOptionsPresenter implements PresenterInterface
                 ->setCallToActionText(sprintf($this->module->l('Pay with %s', 'PaymentOptionsPresenter'), $paymentMethod->identifier));
             //@formatter:off
 
+            $productId = $this->extractProductIdFromPaymentOption($paymentOption);
+            if ((int)$productId === self::MEALVOUCHER_PRODUCT_ID &&
+                (!$this->isEligibleForMealVoucher() || !$this->isCustomerDataValid())) {
+                continue;
+            }
+
             $paymentOptions[] = $paymentOption;
         }
 
         return $paymentOptions;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isCustomerDataValid() {
+        return $this->context->customer->id && $this->context->customer->email;
+    }
+
+    /**
+     * @param PaymentOption $paymentOption
+     * @return mixed|null
+     */
+    private function extractProductIdFromPaymentOption(PaymentOption $paymentOption) {
+        $urlParts = parse_url($paymentOption->getAction());
+        parse_str($urlParts['query'], $queryParams);
+
+        return isset($queryParams['productId']) ? $queryParams['productId'] : null;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isEligibleForMealVoucher()
+    {
+        foreach ($this->context->cart->getProducts() as $product) {
+            $productType = Tools::getGiftCardTypeByIdProduct($product['id_product']);
+            if (in_array($productType, $this->getEligibleProductTypes())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Return eligible product types for meal vouchers
+     *
+     * @return string[]
+     */
+    private function getEligibleProductTypes()
+    {
+        return array(
+            HostedPaymentRequestBuilder::GIFT_CARD_PRODUCT_TYPE_FOOD_DRINK,
+            HostedPaymentRequestBuilder::GIFT_CARD_PRODUCT_TYPE_HOME_GARDEN,
+            HostedPaymentRequestBuilder::GIFT_CARD_PRODUCT_TYPE_GIFT_FLOWERS
+        );
     }
 }

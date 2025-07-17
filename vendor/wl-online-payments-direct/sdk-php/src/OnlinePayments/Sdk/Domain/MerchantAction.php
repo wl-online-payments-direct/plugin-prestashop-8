@@ -1,11 +1,9 @@
 <?php
 /*
- * This class was auto-generated.
+ * This file was automatically generated.
  */
-
 namespace OnlinePayments\Sdk\Domain;
 
-use OnlinePayments\Sdk\DataObject;
 use UnexpectedValueException;
 
 /**
@@ -13,23 +11,31 @@ use UnexpectedValueException;
  */
 class MerchantAction extends DataObject
 {
-    // Properties
     /**
      * @var string
      */
-    private $actionType;
+    public $actionType = null;
+
+    /**
+     * @var MobileThreeDSecureChallengeParameters
+     */
+    public $mobileThreeDSecureChallengeParameters = null;
 
     /**
      * @var RedirectData
      */
-    private $redirectData;
+    public $redirectData = null;
 
     /**
      * @var ShowFormData
      */
-    private $showFormData;
+    public $showFormData = null;
 
-    // Methods
+    /**
+     * @var ShowInstructionsData
+     */
+    public $showInstructionsData = null;
+
     /**
      * @return string
      */
@@ -37,12 +43,29 @@ class MerchantAction extends DataObject
     {
         return $this->actionType;
     }
+
     /**
-     * @var string
+     * @param string
      */
     public function setActionType($value)
     {
         $this->actionType = $value;
+    }
+
+    /**
+     * @return MobileThreeDSecureChallengeParameters
+     */
+    public function getMobileThreeDSecureChallengeParameters()
+    {
+        return $this->mobileThreeDSecureChallengeParameters;
+    }
+
+    /**
+     * @param MobileThreeDSecureChallengeParameters
+     */
+    public function setMobileThreeDSecureChallengeParameters($value)
+    {
+        $this->mobileThreeDSecureChallengeParameters = $value;
     }
 
     /**
@@ -52,8 +75,9 @@ class MerchantAction extends DataObject
     {
         return $this->redirectData;
     }
+
     /**
-     * @var RedirectData
+     * @param RedirectData
      */
     public function setRedirectData($value)
     {
@@ -67,12 +91,29 @@ class MerchantAction extends DataObject
     {
         return $this->showFormData;
     }
+
     /**
-     * @var ShowFormData
+     * @param ShowFormData
      */
     public function setShowFormData($value)
     {
         $this->showFormData = $value;
+    }
+
+    /**
+     * @return ShowInstructionsData
+     */
+    public function getShowInstructionsData()
+    {
+        return $this->showInstructionsData;
+    }
+
+    /**
+     * @param ShowInstructionsData
+     */
+    public function setShowInstructionsData($value)
+    {
+        $this->showInstructionsData = $value;
     }
 
     /**
@@ -81,14 +122,20 @@ class MerchantAction extends DataObject
     public function toObject()
     {
         $object = parent::toObject();
-        if ($this->actionType !== null) {
+        if (!is_null($this->actionType)) {
             $object->actionType = $this->actionType;
         }
-        if ($this->redirectData !== null) {
+        if (!is_null($this->mobileThreeDSecureChallengeParameters)) {
+            $object->mobileThreeDSecureChallengeParameters = $this->mobileThreeDSecureChallengeParameters->toObject();
+        }
+        if (!is_null($this->redirectData)) {
             $object->redirectData = $this->redirectData->toObject();
         }
-        if ($this->showFormData !== null) {
+        if (!is_null($this->showFormData)) {
             $object->showFormData = $this->showFormData->toObject();
+        }
+        if (!is_null($this->showInstructionsData)) {
+            $object->showInstructionsData = $this->showInstructionsData->toObject();
         }
         return $object;
     }
@@ -104,6 +151,13 @@ class MerchantAction extends DataObject
         if (property_exists($object, 'actionType')) {
             $this->actionType = $object->actionType;
         }
+        if (property_exists($object, 'mobileThreeDSecureChallengeParameters')) {
+            if (!is_object($object->mobileThreeDSecureChallengeParameters)) {
+                throw new UnexpectedValueException('value \'' . print_r($object->mobileThreeDSecureChallengeParameters, true) . '\' is not an object');
+            }
+            $value = new MobileThreeDSecureChallengeParameters();
+            $this->mobileThreeDSecureChallengeParameters = $value->fromObject($object->mobileThreeDSecureChallengeParameters);
+        }
         if (property_exists($object, 'redirectData')) {
             if (!is_object($object->redirectData)) {
                 throw new UnexpectedValueException('value \'' . print_r($object->redirectData, true) . '\' is not an object');
@@ -117,6 +171,13 @@ class MerchantAction extends DataObject
             }
             $value = new ShowFormData();
             $this->showFormData = $value->fromObject($object->showFormData);
+        }
+        if (property_exists($object, 'showInstructionsData')) {
+            if (!is_object($object->showInstructionsData)) {
+                throw new UnexpectedValueException('value \'' . print_r($object->showInstructionsData, true) . '\' is not an object');
+            }
+            $value = new ShowInstructionsData();
+            $this->showInstructionsData = $value->fromObject($object->showInstructionsData);
         }
         return $this;
     }
