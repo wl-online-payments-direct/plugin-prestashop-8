@@ -173,7 +173,7 @@ class WorldlineopCronCaptureModuleFrontController extends ModuleFrontController
             }
             try {
                 $paymentResponse = $merchantClient->payments()->getPaymentDetails($transaction->reference);
-                $captures = $merchantClient->payments()->getCaptures($transaction->reference);
+                $captures = $merchantClient->captures()->getCaptures($transaction->reference);
             } catch (Exception $e) {
                 $this->printOrderDebug($e->getMessage());
                 continue;

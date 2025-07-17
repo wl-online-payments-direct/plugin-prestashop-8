@@ -34,6 +34,8 @@ use OnlinePayments\Sdk\Domain\PersonalInformation;
 use OnlinePayments\Sdk\Domain\PersonalName;
 use OnlinePayments\Sdk\Domain\RedirectionData;
 use OnlinePayments\Sdk\Domain\RedirectPaymentMethodSpecificInput;
+use OnlinePayments\Sdk\Domain\RedirectPaymentProduct5403SpecificInput;
+use OnlinePayments\Sdk\Domain\RedirectPaymentProduct5402SpecificInput;
 use OnlinePayments\Sdk\Domain\Shipping;
 use OnlinePayments\Sdk\Domain\SurchargeSpecificInput;
 use RandomLib\Factory;
@@ -52,6 +54,8 @@ abstract class AbstractRequestBuilder implements PaymentRequestBuilderInterface
 {
     public const PRODUCT_ID_MAESTRO = 117;
     public const PRODUCT_ID_INTERSOLVE = 5700;
+    public const PRODUCT_ID_CVCO = 5403;
+    public const PRODUCT_ID_MEALVOUCHER = 5402;
 
     public const PHONE_NUMBER_MAX_CHARS = 15;
 
@@ -138,15 +142,27 @@ abstract class AbstractRequestBuilder implements PaymentRequestBuilderInterface
         if (false !== $this->idProduct) {
             $redirectPaymentMethodSpecificInput->setPaymentProductId($this->idProduct);
         }
-        $redirectPaymentMethodSpecificInput->setRequiresApproval(
-            $this->settings->advancedSettings->paymentSettings->transactionType === PaymentSettings::TRANSACTION_TYPE_AUTH
-        );
+          if ($this->idProduct == self::PRODUCT_ID_MEALVOUCHER || (int) $this->idProduct === self::PRODUCT_ID_CVCO) {
+            $redirectPaymentMethodSpecificInput->setRequiresApproval(false);
+        } else {
+            $redirectPaymentMethodSpecificInput->setRequiresApproval(
+                $this->settings->advancedSettings->paymentSettings->transactionType === PaymentSettings::TRANSACTION_TYPE_AUTH
+            );
+        }
         $redirectionData = new RedirectionData();
 
         $redirectionData->setReturnUrl(
             $this->context->link->getModuleLink($this->module->name, 'redirect', ['action' => 'redirectReturnHosted'])
         );
         $redirectPaymentMethodSpecificInput->setRedirectionData($redirectionData);
+
+        $product5403SpecificInput = new RedirectPaymentProduct5403SpecificInput();
+        $product5403SpecificInput->setCompleteRemainingPaymentAmount(true);
+        $redirectPaymentMethodSpecificInput->setPaymentProduct5403SpecificInput($product5403SpecificInput);
+
+        $product5402SpecificInput = new RedirectPaymentProduct5402SpecificInput();
+        $product5402SpecificInput->setCompleteRemainingPaymentAmount(true);
+        $redirectPaymentMethodSpecificInput->setPaymentProduct5402SpecificInput($product5402SpecificInput);
 
         return $redirectPaymentMethodSpecificInput;
     }
@@ -206,6 +222,9 @@ abstract class AbstractRequestBuilder implements PaymentRequestBuilderInterface
             $device->setBrowserData($browserData);
         }
         $customer->setDevice($device);
+        if ($this->context->customer->id) {
+            $customer->setMerchantCustomerId($this->context->customer->id);
+        }
         $customerAddress = new \Address((int) $this->context->cart->id_address_invoice);
         $contactDetails = new ContactDetails();
         $contactDetails->setEmailAddress($this->context->customer->email);

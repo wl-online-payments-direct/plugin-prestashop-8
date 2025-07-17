@@ -1,11 +1,9 @@
 <?php
 /*
- * This class was auto-generated.
+ * This file was automatically generated.
  */
-
 namespace OnlinePayments\Sdk\Domain;
 
-use OnlinePayments\Sdk\DataObject;
 use UnexpectedValueException;
 
 /**
@@ -13,83 +11,91 @@ use UnexpectedValueException;
  */
 class CardPaymentMethodSpecificOutput extends DataObject
 {
-    // Properties
     /**
      * @var AcquirerInformation
      */
-    private $acquirerInformation;
+    public $acquirerInformation = null;
 
     /**
      * @var int
      */
-    private $authenticatedAmount;
+    public $authenticatedAmount = null;
 
     /**
      * @var string
      */
-    private $authorisationCode;
+    public $authorisationCode = null;
 
     /**
      * @var CardEssentials
      */
-    private $card;
+    public $card = null;
 
     /**
      * @var CurrencyConversion
      */
-    private $currencyConversion;
+    public $currencyConversion = null;
 
     /**
      * @var ExternalTokenLinked
      */
-    private $externalTokenLinked;
+    public $externalTokenLinked = null;
 
     /**
      * @var CardFraudResults
      */
-    private $fraudResults;
+    public $fraudResults = null;
 
     /**
      * @var string
      */
-    private $initialSchemeTransactionId;
+    public $initialSchemeTransactionId = null;
 
     /**
      * @var string
      */
-    private $paymentOption;
+    public $paymentAccountReference = null;
+
+    /**
+     * @var string
+     */
+    public $paymentOption = null;
 
     /**
      * @var PaymentProduct3208SpecificOutput
      */
-    private $paymentProduct3208SpecificOutput;
+    public $paymentProduct3208SpecificOutput = null;
 
     /**
      * @var PaymentProduct3209SpecificOutput
      */
-    private $paymentProduct3209SpecificOutput;
+    public $paymentProduct3209SpecificOutput = null;
 
     /**
      * @var int
      */
-    private $paymentProductId;
+    public $paymentProductId = null;
+
+    /**
+     * @var ReattemptInstructions
+     */
+    public $reattemptInstructions = null;
 
     /**
      * @var string
      */
-    private $schemeReferenceData;
+    public $schemeReferenceData = null;
 
     /**
      * @var ThreeDSecureResults
      */
-    private $threeDSecureResults;
+    public $threeDSecureResults = null;
 
     /**
      * @var string
      */
-    private $token;
+    public $token = null;
 
-    // Methods
     /**
      * @return AcquirerInformation
      */
@@ -97,8 +103,9 @@ class CardPaymentMethodSpecificOutput extends DataObject
     {
         return $this->acquirerInformation;
     }
+
     /**
-     * @var AcquirerInformation
+     * @param AcquirerInformation
      */
     public function setAcquirerInformation($value)
     {
@@ -112,8 +119,9 @@ class CardPaymentMethodSpecificOutput extends DataObject
     {
         return $this->authenticatedAmount;
     }
+
     /**
-     * @var int
+     * @param int
      */
     public function setAuthenticatedAmount($value)
     {
@@ -127,8 +135,9 @@ class CardPaymentMethodSpecificOutput extends DataObject
     {
         return $this->authorisationCode;
     }
+
     /**
-     * @var string
+     * @param string
      */
     public function setAuthorisationCode($value)
     {
@@ -142,8 +151,9 @@ class CardPaymentMethodSpecificOutput extends DataObject
     {
         return $this->card;
     }
+
     /**
-     * @var CardEssentials
+     * @param CardEssentials
      */
     public function setCard($value)
     {
@@ -157,8 +167,9 @@ class CardPaymentMethodSpecificOutput extends DataObject
     {
         return $this->currencyConversion;
     }
+
     /**
-     * @var CurrencyConversion
+     * @param CurrencyConversion
      */
     public function setCurrencyConversion($value)
     {
@@ -172,8 +183,9 @@ class CardPaymentMethodSpecificOutput extends DataObject
     {
         return $this->externalTokenLinked;
     }
+
     /**
-     * @var ExternalTokenLinked
+     * @param ExternalTokenLinked
      */
     public function setExternalTokenLinked($value)
     {
@@ -187,8 +199,9 @@ class CardPaymentMethodSpecificOutput extends DataObject
     {
         return $this->fraudResults;
     }
+
     /**
-     * @var CardFraudResults
+     * @param CardFraudResults
      */
     public function setFraudResults($value)
     {
@@ -202,8 +215,9 @@ class CardPaymentMethodSpecificOutput extends DataObject
     {
         return $this->initialSchemeTransactionId;
     }
+
     /**
-     * @var string
+     * @param string
      */
     public function setInitialSchemeTransactionId($value)
     {
@@ -213,12 +227,29 @@ class CardPaymentMethodSpecificOutput extends DataObject
     /**
      * @return string
      */
+    public function getPaymentAccountReference()
+    {
+        return $this->paymentAccountReference;
+    }
+
+    /**
+     * @param string
+     */
+    public function setPaymentAccountReference($value)
+    {
+        $this->paymentAccountReference = $value;
+    }
+
+    /**
+     * @return string
+     */
     public function getPaymentOption()
     {
         return $this->paymentOption;
     }
+
     /**
-     * @var string
+     * @param string
      */
     public function setPaymentOption($value)
     {
@@ -232,8 +263,9 @@ class CardPaymentMethodSpecificOutput extends DataObject
     {
         return $this->paymentProduct3208SpecificOutput;
     }
+
     /**
-     * @var PaymentProduct3208SpecificOutput
+     * @param PaymentProduct3208SpecificOutput
      */
     public function setPaymentProduct3208SpecificOutput($value)
     {
@@ -247,8 +279,9 @@ class CardPaymentMethodSpecificOutput extends DataObject
     {
         return $this->paymentProduct3209SpecificOutput;
     }
+
     /**
-     * @var PaymentProduct3209SpecificOutput
+     * @param PaymentProduct3209SpecificOutput
      */
     public function setPaymentProduct3209SpecificOutput($value)
     {
@@ -262,12 +295,29 @@ class CardPaymentMethodSpecificOutput extends DataObject
     {
         return $this->paymentProductId;
     }
+
     /**
-     * @var int
+     * @param int
      */
     public function setPaymentProductId($value)
     {
         $this->paymentProductId = $value;
+    }
+
+    /**
+     * @return ReattemptInstructions
+     */
+    public function getReattemptInstructions()
+    {
+        return $this->reattemptInstructions;
+    }
+
+    /**
+     * @param ReattemptInstructions
+     */
+    public function setReattemptInstructions($value)
+    {
+        $this->reattemptInstructions = $value;
     }
 
     /**
@@ -277,8 +327,9 @@ class CardPaymentMethodSpecificOutput extends DataObject
     {
         return $this->schemeReferenceData;
     }
+
     /**
-     * @var string
+     * @param string
      */
     public function setSchemeReferenceData($value)
     {
@@ -292,8 +343,9 @@ class CardPaymentMethodSpecificOutput extends DataObject
     {
         return $this->threeDSecureResults;
     }
+
     /**
-     * @var ThreeDSecureResults
+     * @param ThreeDSecureResults
      */
     public function setThreeDSecureResults($value)
     {
@@ -307,8 +359,9 @@ class CardPaymentMethodSpecificOutput extends DataObject
     {
         return $this->token;
     }
+
     /**
-     * @var string
+     * @param string
      */
     public function setToken($value)
     {
@@ -321,49 +374,55 @@ class CardPaymentMethodSpecificOutput extends DataObject
     public function toObject()
     {
         $object = parent::toObject();
-        if ($this->acquirerInformation !== null) {
+        if (!is_null($this->acquirerInformation)) {
             $object->acquirerInformation = $this->acquirerInformation->toObject();
         }
-        if ($this->authenticatedAmount !== null) {
+        if (!is_null($this->authenticatedAmount)) {
             $object->authenticatedAmount = $this->authenticatedAmount;
         }
-        if ($this->authorisationCode !== null) {
+        if (!is_null($this->authorisationCode)) {
             $object->authorisationCode = $this->authorisationCode;
         }
-        if ($this->card !== null) {
+        if (!is_null($this->card)) {
             $object->card = $this->card->toObject();
         }
-        if ($this->currencyConversion !== null) {
+        if (!is_null($this->currencyConversion)) {
             $object->currencyConversion = $this->currencyConversion->toObject();
         }
-        if ($this->externalTokenLinked !== null) {
+        if (!is_null($this->externalTokenLinked)) {
             $object->externalTokenLinked = $this->externalTokenLinked->toObject();
         }
-        if ($this->fraudResults !== null) {
+        if (!is_null($this->fraudResults)) {
             $object->fraudResults = $this->fraudResults->toObject();
         }
-        if ($this->initialSchemeTransactionId !== null) {
+        if (!is_null($this->initialSchemeTransactionId)) {
             $object->initialSchemeTransactionId = $this->initialSchemeTransactionId;
         }
-        if ($this->paymentOption !== null) {
+        if (!is_null($this->paymentAccountReference)) {
+            $object->paymentAccountReference = $this->paymentAccountReference;
+        }
+        if (!is_null($this->paymentOption)) {
             $object->paymentOption = $this->paymentOption;
         }
-        if ($this->paymentProduct3208SpecificOutput !== null) {
+        if (!is_null($this->paymentProduct3208SpecificOutput)) {
             $object->paymentProduct3208SpecificOutput = $this->paymentProduct3208SpecificOutput->toObject();
         }
-        if ($this->paymentProduct3209SpecificOutput !== null) {
+        if (!is_null($this->paymentProduct3209SpecificOutput)) {
             $object->paymentProduct3209SpecificOutput = $this->paymentProduct3209SpecificOutput->toObject();
         }
-        if ($this->paymentProductId !== null) {
+        if (!is_null($this->paymentProductId)) {
             $object->paymentProductId = $this->paymentProductId;
         }
-        if ($this->schemeReferenceData !== null) {
+        if (!is_null($this->reattemptInstructions)) {
+            $object->reattemptInstructions = $this->reattemptInstructions->toObject();
+        }
+        if (!is_null($this->schemeReferenceData)) {
             $object->schemeReferenceData = $this->schemeReferenceData;
         }
-        if ($this->threeDSecureResults !== null) {
+        if (!is_null($this->threeDSecureResults)) {
             $object->threeDSecureResults = $this->threeDSecureResults->toObject();
         }
-        if ($this->token !== null) {
+        if (!is_null($this->token)) {
             $object->token = $this->token;
         }
         return $object;
@@ -421,6 +480,9 @@ class CardPaymentMethodSpecificOutput extends DataObject
         if (property_exists($object, 'initialSchemeTransactionId')) {
             $this->initialSchemeTransactionId = $object->initialSchemeTransactionId;
         }
+        if (property_exists($object, 'paymentAccountReference')) {
+            $this->paymentAccountReference = $object->paymentAccountReference;
+        }
         if (property_exists($object, 'paymentOption')) {
             $this->paymentOption = $object->paymentOption;
         }
@@ -440,6 +502,13 @@ class CardPaymentMethodSpecificOutput extends DataObject
         }
         if (property_exists($object, 'paymentProductId')) {
             $this->paymentProductId = $object->paymentProductId;
+        }
+        if (property_exists($object, 'reattemptInstructions')) {
+            if (!is_object($object->reattemptInstructions)) {
+                throw new UnexpectedValueException('value \'' . print_r($object->reattemptInstructions, true) . '\' is not an object');
+            }
+            $value = new ReattemptInstructions();
+            $this->reattemptInstructions = $value->fromObject($object->reattemptInstructions);
         }
         if (property_exists($object, 'schemeReferenceData')) {
             $this->schemeReferenceData = $object->schemeReferenceData;

@@ -16,8 +16,15 @@ services:
     factory: ['@worldlineop.sdk.client.factory', 'getMerchant']
 
   worldlineop.sdk.connection:
-    class: 'OnlinePayments\Sdk\DefaultConnection'
+    class: 'OnlinePayments\Sdk\CommunicatorConfiguration'
     public: true
+    factory: [ '@worldlineop.sdk.communicator_configuration.factory', 'getInstance' ]
+
+  worldlineop.sdk.authenticator:
+    class: 'OnlinePayments\Sdk\Authentication\V1HmacAuthenticator'
+    public: true
+    arguments:
+      - '@worldlineop.sdk.connection'
 
   worldlineop.sdk.communicator_configuration.factory:
     class: 'WorldlineOP\PrestaShop\Sdk\CommunicatorConfigurationFactory'
@@ -31,4 +38,4 @@ services:
     public: true
     arguments:
       - '@worldlineop.sdk.connection'
-      - '@=service("worldlineop.sdk.communicator_configuration.factory").getInstance()'
+      - '@worldlineop.sdk.authenticator'
