@@ -52,6 +52,7 @@ class AdvancedSettingsResolver extends AbstractSettingsResolver
                 'safetyDelay',
                 'errorOrderStateId',
                 'groupCardPaymentOptions',
+                'omitOrderItemDetails',
                 'threeDSExempted',
                 'threeDSExemptedType',
                 'threeDSExemptedValue',
@@ -133,6 +134,12 @@ class AdvancedSettingsResolver extends AbstractSettingsResolver
             )
             ->setNormalizer(
                 'groupCardPaymentOptions',
+                function (Options $options, $value) {
+                    return (bool) $value;
+                }
+            )
+            ->setNormalizer(
+                'omitOrderItemDetails',
                 function (Options $options, $value) {
                     return (bool) $value;
                 }
