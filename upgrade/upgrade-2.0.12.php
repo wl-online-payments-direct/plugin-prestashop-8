@@ -19,7 +19,7 @@ if (!defined('_PS_VERSION_')) {
 /**
  * @param Worldlineop $module
  */
-function upgrade_module_2_0_11($module)
+function upgrade_module_2_0_12($module)
 {
     return $module->unregisterHook('customerAccount')
         && $module->registerHook('displayCustomerAccount');
