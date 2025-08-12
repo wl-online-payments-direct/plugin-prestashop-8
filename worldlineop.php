@@ -267,7 +267,7 @@ class Worldlineop extends PaymentModule
      *
      * @return string
      */
-    public function hookCustomerAccount($params)
+    public function hookDisplayCustomerAccount($params)
     {
         return $this->display(dirname(__FILE__), 'views/templates/front/hookCustomerAccount.tpl');
     }
