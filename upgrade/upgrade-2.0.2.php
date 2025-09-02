@@ -22,10 +22,10 @@ const THREE_DS_EXEMPTED_DEFAULT_TYPE = 'low-value';
 const THREE_DS_EXEMPTED_DEFAULT_VALUE = '30';
 
 /**
- * Updates module from previous versions to the version 2.0.3
+ * Updates module from previous versions to the version 2.0.2
  * Modify database: Update threeDS advanced settings
  */
-function upgrade_module_2_0_3()
+function upgrade_module_2_0_2()
 {
     $previousShopContext = Shop::getContext();
     Shop::setContext(Shop::CONTEXT_ALL);
