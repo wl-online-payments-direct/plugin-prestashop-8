@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.12.1] - 2025-10-09
+### Changed
+- Fix saving masked values and API credentials validation
+- Fix double use statement
+
 ## [2.0.12] - 2025-13-08
 ### Changed
 - Add null checking in liability/exemption chain

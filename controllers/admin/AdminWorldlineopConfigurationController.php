@@ -132,6 +132,7 @@ class AdminWorldlineopConfigurationController extends ModuleAdminController
         /** @var \WorldlineOP\PrestaShop\Configuration\Updater\AccountSettingsUpdater $updater */
         $updater = $this->module->getService('worldlineop.settings.account.updater');
         $form = Tools::getValue('worldlineopAccountSettings');
+        $form = $updater->forceResolve($form);
         try {
             $updater->update($form);
         } catch (ExceptionList $e) {
