@@ -20,7 +20,6 @@ use OnlinePayments\Sdk\Domain\CapturePaymentRequest;
 use OnlinePayments\Sdk\Domain\RefundRequest;
 use OnlinePayments\Sdk\ResponseException;
 use WorldlineOP\PrestaShop\Utils\Decimal;
-use OnlinePayments\Sdk\Domain\CancelPaymentRequest;
 
 /**
  * Class AdminWorldlineopAjaxTransactionController
