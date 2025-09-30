@@ -28,7 +28,7 @@ hooks:
   - 'displayBackOfficeFooter'
   - 'actionFrontControllerSetMedia'
   - 'actionAdminControllerSetMedia'
-  - 'customerAccount'
+  - 'displayCustomerAccount'
   - 'displayPDFInvoice'
   - 'displayAdminProductsExtra'
   - 'actionProductUpdate'

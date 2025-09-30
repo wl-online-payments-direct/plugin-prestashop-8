@@ -45,6 +45,8 @@ class AccountSettingsResolver extends AbstractSettingsResolver
                 'prodWebhooksKey',
                 'prodWebhooksSecret',
                 'prodPspid',
+                'webhookMode',
+                'additionalWebhookUrls',
             ])
             ->setNormalizer(
                 'testApiKey',
@@ -104,6 +106,21 @@ class AccountSettingsResolver extends AbstractSettingsResolver
                 'prodPspid',
                 function (Options $options, $value) {
                     return trim($value);
+                }
+            )
+            ->setNormalizer(
+                'webhookMode',
+                function (Options $options, $value) {
+                    return trim($value);
+                }
+            )
+            ->setNormalizer(
+                'additionalWebhookUrls',
+                function (Options $options, $value) {
+                    if (is_array($value)) {
+                        return array_filter(array_map('trim', $value));
+                    }
+                    return $value;
                 }
             );
     }
