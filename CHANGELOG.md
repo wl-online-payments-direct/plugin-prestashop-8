@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.13] - 2025-30-09
+### Changed
+- Fix wrong shipping calculation upon clicking back and changing shipping carrier
+
 ## [2.0.12.1] - 2025-10-09
 ### Changed
 - Fix saving masked values and API credentials validation
