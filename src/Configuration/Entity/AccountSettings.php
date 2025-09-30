@@ -62,4 +62,10 @@ class AccountSettings
 
     /** @var string */
     public $prodWebhooksSecret;
+
+    /** @var string */
+    public $webhookMode = 'manual';
+
+    /** @var array */
+    public $additionalWebhookUrls = [];
 }

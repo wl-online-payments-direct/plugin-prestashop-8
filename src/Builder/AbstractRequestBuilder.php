@@ -28,6 +28,7 @@ use OnlinePayments\Sdk\Domain\CompanyInformation;
 use OnlinePayments\Sdk\Domain\ContactDetails;
 use OnlinePayments\Sdk\Domain\Customer;
 use OnlinePayments\Sdk\Domain\CustomerDevice;
+use OnlinePayments\Sdk\Domain\Feedbacks;
 use OnlinePayments\Sdk\Domain\Order;
 use OnlinePayments\Sdk\Domain\OrderReferences;
 use OnlinePayments\Sdk\Domain\PersonalInformation;
@@ -281,5 +282,38 @@ abstract class AbstractRequestBuilder implements PaymentRequestBuilderInterface
         $shipping->setAddressIndicator($this->context->cart->id_address_delivery === $this->context->cart->id_address_invoice ? 'same-as-billing' : 'different-than-billing');
 
         return $shipping;
+    }
+
+    /**
+     * Build feedbacks object for payment requests.
+     *
+     * @return Feedbacks
+     */
+    public function buildFeedbacks()
+    {
+        $feedbacks = new Feedbacks();
+        $webhookMode = $this->settings->accountSettings->webhookMode ?? 'manual';
+        if ($webhookMode !== 'automatic') {
+            return $feedbacks;
+        }
+
+        $webhookUrls = [];
+
+        $mainWebhookUrl = $this->context->link->getModuleLink(
+            $this->module->name,
+            'webhook',
+            [],
+            true
+        );
+        $webhookUrls[] = $mainWebhookUrl;
+
+        $additionalWebhooks = $this->settings->accountSettings->additionalWebhookUrls ?? [];
+        if (!empty($additionalWebhooks) && is_array($additionalWebhooks)) {
+            $webhookUrls = array_merge($webhookUrls, $additionalWebhooks);
+        }
+
+        $feedbacks->setWebhooksUrls($webhookUrls);
+
+        return $feedbacks;
     }
 }
