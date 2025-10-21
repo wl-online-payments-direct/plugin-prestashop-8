@@ -4,19 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.14] - 2025-30-09
-### Added
-- Add configuration to send webhook url in payloads
-- Fix deprecated hook in customer account
-
-## [2.0.13] - 2025-30-09
+## [2.0.15] - 2025-10-09
 ### Changed
-- Fix wrong shipping calculation upon clicking back and changing shipping carrier
+- Fix issue with Mealvouchers being shown on hosted page
 
 ## [2.0.12.1] - 2025-10-09
 ### Changed
 - Fix saving masked values and API credentials validation
 - Fix double use statement
+
+## [2.0.14] - 2025-28-08
+### Added
+- Add configuration to send webhook url in payloads
+
+## [2.0.13] - 2025-22-08
+### Changed
+- Fix wrong shipping calculation upon clicking back and changing shipping carrier
 
 ## [2.0.12] - 2025-13-08
 ### Changed
