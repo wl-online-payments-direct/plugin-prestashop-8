@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+    <name>worldlineop</name>
+    <displayName>Worldline Online Payments</displayName>
+    <version>2.0.12</version>
+    <author>PrestaShop partner</author>
+    <description>Worldline Online Payments module for PrestaShop</description>
+    <tab>payments_gateways</tab>
+    <is_configurable>1</is_configurable>
+    <need_instance>0</need_instance>
+</module>

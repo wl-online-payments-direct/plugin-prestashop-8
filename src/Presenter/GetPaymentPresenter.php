@@ -124,7 +124,7 @@ class GetPaymentPresenter implements PresenterInterface
         $idShop = $this->cart->id_shop;
         $settings = $this->settingsLoader->setContext($idShop);
         $this->merchantClientFactory->setSettings($settings);
-        $idOrder = Order::getOrderByCartId($this->cart->id);
+        $idOrder = Order::getIdByCartId($this->cart->id);
         $order = new Order((int) $idOrder);
 
         $paymentStatus = $paymentResponse->getStatus();

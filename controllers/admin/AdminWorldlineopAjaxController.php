@@ -57,7 +57,7 @@ class AdminWorldlineopAjaxController extends ModuleAdminController
         try {
             $paymentMethods = $productRequest->request($paymentType);
         } catch (Exception $e) {
-            $this->ajaxDie(json_encode([
+            $this->ajaxRender(json_encode([
                 'errors' => true,
                 'message' => $e->getMessage(),
             ]));
@@ -76,7 +76,7 @@ class AdminWorldlineopAjaxController extends ModuleAdminController
         $html = $this->context->smarty->fetch(
             $this->module->getLocalPath() . 'views/templates/admin/worldlineop_configuration/_paymentMethodsList.tpl'
         );
-        $this->ajaxDie(json_encode([
+        $this->ajaxRender(json_encode([
             'errors' => false,
             'html_result' => $html,
         ]));

@@ -94,6 +94,18 @@ class PaymentMethodsSettingsDenormalizer extends ObjectNormalizer
     }
 
     /**
+     * @param string|null $format
+     *
+     * @return array
+     */
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            PaymentMethodsSettings::class => true,
+        ];
+    }
+
+    /**
      * Sets the owning Denormalizer object.
      */
     public function setDenormalizer(DenormalizerInterface $denormalizer)

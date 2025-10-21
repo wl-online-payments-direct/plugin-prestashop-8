@@ -25,15 +25,18 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 class SettingsEncoder extends JsonEncoder
 {
     /**
-     * @param $data
-     * @param $format
-     * @param array $context
+     * @param mixed  $data
+     * @param string $format
+     * @param array  $context
      *
-     * @return bool|false|float|int|string
+     * @return string
      */
-    public function encode($data, $format, array $context = [])
+    public function encode(mixed $data, $format, array $context = []): string
     {
-        unset($data['extra']);
+        // Remove 'extra' key if it exists
+        if (is_array($data) && array_key_exists('extra', $data)) {
+            unset($data['extra']);
+        }
 
         return parent::encode($data, $format, $context);
     }

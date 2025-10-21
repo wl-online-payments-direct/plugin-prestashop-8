@@ -78,6 +78,18 @@ class AdvancedSettingsDenormalizer extends ObjectNormalizer
     }
 
     /**
+     * @param string|null $format
+     *
+     * @return array
+     */
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            AdvancedSettings::class => true,
+        ];
+    }
+
+    /**
      * @param DenormalizerInterface $denormalizer
      */
     public function setDenormalizer(DenormalizerInterface $denormalizer)

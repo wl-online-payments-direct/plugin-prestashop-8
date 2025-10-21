@@ -30,35 +30,64 @@ class SettingsSerializer
     /** @var Serializer */
     private $serializer;
 
+    /** @var array */
+    private $normalizationContext;
+
     /**
      * SettingsSerializer constructor.
      */
     public function __construct()
     {
+        // Define normalization callbacks
+        $this->normalizationContext = [
+            ObjectNormalizer::CALLBACKS => [
+                'redirectPaymentMethods' => fn($value) => $value ?? [],
+                'iframePaymentMethods' => fn($value) => $value ?? [],
+            ],
+        ];
+
+        // Base ObjectNormalizer
         $objectNormalizer = new ObjectNormalizer(null, null, null, new PhpDocExtractor());
-        $objectNormalizer
-            ->setCallbacks([
-                'redirectPaymentMethods' => function ($value) {
-                    return null === $value ? [] : $value;
-                },
-                'iframePaymentMethods' => function ($value) {
-                    return null === $value ? [] : $value;
-                },
-            ]);
+
+        // Your custom denormalizers
         $advancedSettingsDenormalizer = new AdvancedSettingsDenormalizer();
         $advancedSettingsDenormalizer->setDenormalizer($objectNormalizer);
+
         $paymentMethodsSettingsDenormalizer = new PaymentMethodsSettingsDenormalizer();
         $paymentMethodsSettingsDenormalizer->setDenormalizer($objectNormalizer);
+
+        // Custom encoder
         $settingsEncoder = new SettingsEncoder();
 
-        $this->serializer = new Serializer([$advancedSettingsDenormalizer, $paymentMethodsSettingsDenormalizer, $objectNormalizer, new ArrayDenormalizer()], [$settingsEncoder]);
+        // Build serializer
+        $this->serializer = new Serializer(
+            [
+                $advancedSettingsDenormalizer,
+                $paymentMethodsSettingsDenormalizer,
+                $objectNormalizer,
+                new ArrayDenormalizer()
+            ],
+            [$settingsEncoder]
+        );
     }
 
     /**
+     * Returns the serializer instance.
+     *
      * @return Serializer
      */
-    public function getSerializer()
+    public function getSerializer(): Serializer
     {
         return $this->serializer;
+    }
+
+    /**
+     * Returns the normalization context including callbacks.
+     *
+     * @return array
+     */
+    public function getNormalizationContext(): array
+    {
+        return $this->normalizationContext;
     }
 }

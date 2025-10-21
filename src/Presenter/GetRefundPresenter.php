@@ -79,7 +79,7 @@ class GetRefundPresenter implements PresenterInterface
 
             return $this->presentedData;
         }
-        $idOrder = Order::getOrderByCartId($cart->id);
+        $idOrder = Order::getIdByCartId($cart->id);
         $order = new Order((int) $idOrder);
         if (!Validate::isLoadedObject($order)) {
             $this->logger->error('Cart cannot be loaded', ['merchantReference' => $merchantReferenceFull]);

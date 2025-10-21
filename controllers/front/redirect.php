@@ -118,7 +118,10 @@ class WorldlineopRedirectModuleFrontController extends ModuleFrontController
             }
             $tokenValue = $token->value;
         }
-        if (false !== Order::getOrderByCartId($cart->id)) {
+
+        $orderId = Order::getIdByCartId($cart->id);
+
+        if ($orderId) {
             Tools::redirect($this->context->link->getPageLink('order', null, null, ['step' => 3]));
         }
 
@@ -256,7 +259,7 @@ class WorldlineopRedirectModuleFrontController extends ModuleFrontController
                 ->getPaymentStatusCategory()
             ) {
                 $this->hostedCheckoutRepository->delete($hostedCheckout);
-                if (($idOrder = Order::getOrderByCartId($hostedCheckout->id_cart)) !== false) {
+                if (($idOrder = Order::getIdByCartId($hostedCheckout->id_cart)) !== false) {
                     die(json_encode([
                         'redirectUrl' => $this->context->link->getModuleLink(
                             $this->module->name,
@@ -393,7 +396,7 @@ class WorldlineopRedirectModuleFrontController extends ModuleFrontController
      */
     public function dieIframeOrderConfirmation($cart, $customer)
     {
-        if (false !== Order::getOrderByCartId($cart->id)) {
+        if (false !== Order::getIdByCartId($cart->id)) {
             die(json_encode([
                 'redirectUrl' => $this->context->link->getPageLink(
                     'order-confirmation',
@@ -417,7 +420,7 @@ class WorldlineopRedirectModuleFrontController extends ModuleFrontController
      */
     public function dieRedirectOrderConfirmation($cart, $hostedCheckout)
     {
-        if (false !== Order::getOrderByCartId($cart->id)) {
+        if (false !== Order::getIdByCartId($cart->id)) {
             $customer = new Customer((int) $cart->id_customer);
             die(json_encode([
                 'redirectUrl' => $this->context->link->getPageLink(

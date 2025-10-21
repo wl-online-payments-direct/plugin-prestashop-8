@@ -36,17 +36,19 @@ class AdvancedSettingsValidationData extends AbstractValidationData
             'testEndpoint' => [
                 new Assert\Url([
                     'protocols' => ['https'],
-                    'message' => $this->module->l('Test endpoint value must be a valid https URL', 'PaymentMethodsValidationData'),
-                    'checkDNS' => Assert\Url::CHECK_DNS_TYPE_A,
-                    'dnsMessage' => $this->module->l('The test endpoint host could not be resolved', 'PaymentMethodsValidationData'),
+                    'message' => $this->module->l(
+                        'Test endpoint value must be a valid https URL',
+                        'PaymentMethodsValidationData'
+                    ),
                 ]),
             ],
             'prodEndpoint' => [
                 new Assert\Url([
                     'protocols' => ['https'],
-                    'message' => $this->module->l('Prod endpoint value must be valid a https URL', 'PaymentMethodsValidationData'),
-                    'checkDNS' => Assert\Url::CHECK_DNS_TYPE_A,
-                    'dnsMessage' => $this->module->l('The production endpoint host could not be resolved', 'PaymentMethodsValidationData'),
+                    'message' => $this->module->l(
+                        'Prod endpoint value must be a valid https URL',
+                        'PaymentMethodsValidationData'
+                    ),
                 ]),
             ],
         ];
@@ -55,6 +57,9 @@ class AdvancedSettingsValidationData extends AbstractValidationData
         $arrayToValidate = array_intersect_key($array, $constraints);
         $validationConstraints = array_intersect_key($constraints, $array);
 
-        return ['array' => $arrayToValidate, 'constraints' => $validationConstraints];
+        return [
+            'array' => $arrayToValidate,
+            'constraints' => $validationConstraints,
+        ];
     }
 }
