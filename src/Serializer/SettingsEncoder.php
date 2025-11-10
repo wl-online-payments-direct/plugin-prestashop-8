@@ -31,7 +31,7 @@ class SettingsEncoder extends JsonEncoder
      *
      * @return string
      */
-    public function encode(mixed $data, $format, array $context = []): string
+    public function encode($data, $format, array $context = []): string
     {
         // Remove 'extra' key if it exists
         if (is_array($data) && array_key_exists('extra', $data)) {
