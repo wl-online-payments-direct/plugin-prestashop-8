@@ -36,6 +36,7 @@ class PaymentMethodsSettingsResolver extends AbstractSettingsResolver
             ->setDefined([
                 'displayGenericOption',
                 'genericLogoFilename',
+                'isDefaultGenericLogo',
                 'deleteGenericLogo',
                 'redirectTemplateFilename',
                 'redirectCallToAction',
@@ -47,6 +48,7 @@ class PaymentMethodsSettingsResolver extends AbstractSettingsResolver
                 'iframePaymentMethods',
                 'iframeLogo',
                 'iframeLogoFilename',
+                'isDefaultIframeLogo',
                 'enabled',
                 'productId',
                 'identifier',

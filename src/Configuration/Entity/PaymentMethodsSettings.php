@@ -25,12 +25,17 @@ class PaymentMethodsSettings
     public const PAYMENT_METHOD_CARD = 'card';
     public const PAYMENT_METHOD_REDIRECT = 'redirect';
     public const PAYMENT_METHOD_MOBILE = 'mobile';
+    public const DEFAULT_GENERIC_LOGO_FILENAME = 'worldlineop_symbol.svg';
+    public const DEFAULT_IFRAME_LOGO_FILENAME = 'cb_visa_mc_amex.svg';
 
     /** @var bool */
     public $displayGenericOption;
 
     /** @var string */
     public $genericLogoFilename;
+
+    /** @var bool */
+    public $isDefaultGenericLogo;
 
     /** @var string */
     public $redirectTemplateFilename;
@@ -46,6 +51,9 @@ class PaymentMethodsSettings
 
     /** @var string */
     public $iframeLogoFilename;
+
+    /** @var bool */
+    public $isDefaultIframeLogo;
 
     /** @var bool */
     public $displayRedirectPaymentOptions;
