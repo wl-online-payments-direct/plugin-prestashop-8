@@ -55,6 +55,7 @@ class PaymentMethodsSettingsResolver extends AbstractSettingsResolver
                 'type',
                 'logo',
                 'deleteLogo',
+                'fixedSoftDescriptor',
             ])
             ->setNormalizer(
                 'displayGenericOption',
