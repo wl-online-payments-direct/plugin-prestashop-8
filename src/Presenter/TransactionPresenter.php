@@ -95,6 +95,11 @@ class TransactionPresenter implements PresenterInterface
                 ))) {
                     try {
                         $payment = $this->merchantClient->payments()->getPayment($paymentDetail->getId());
+                    } catch (\Exception $e) {
+                        $payment = $paymentDetails;
+                    }
+
+                    try {
                         $refunds = $this->merchantClient->refunds()->getRefunds($paymentDetail->getId());
                         $captures = $this->merchantClient->captures()->getCaptures($paymentDetail->getId());
                         $paymentSpecificOutput = $this->getPaymentSpecificOutput(
@@ -154,7 +159,7 @@ class TransactionPresenter implements PresenterInterface
                             ];
                         }
                     }
-                    $refundableAmount = !$paymentDetails->getStatusOutput()->getIsRefundable() ? 0 : Tools::getRoundedAmountFromCents($totalCaptured - $totalRefunded + $totalPendingRefund, $currencyCode);
+                    $refundableAmount = !$paymentDetails->getStatusOutput()->getIsRefundable() ? 0 : Tools::getRoundedAmountFromCents($totalCaptured - $totalRefunded - $totalPendingRefund, $currencyCode);
                     $apiErrors = $paymentDetails->getStatusOutput()->getErrors() ?: [];
                     $errors = [];
                     foreach ($apiErrors as $apiError) {

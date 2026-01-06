@@ -41,7 +41,7 @@ class Worldlineop extends PaymentModule
     {
         $this->name = 'worldlineop';
         $this->author = 'Worldline Online Payments';
-        $this->version = '2.0.21';
+        $this->version = '2.0.22';
         $this->tab = 'payments_gateways';
         $this->module_key = '089d13d0218de8085259e542483f4438';
         $this->currencies = true;
@@ -161,7 +161,7 @@ class Worldlineop extends PaymentModule
             case 'order':
                 $this->context->controller->registerJavascript(
                     'worldineoc-js-sdk',
-                    'https://payment.direct.ingenico.com/hostedtokenization/js/client/tokenizer.min.js',
+                    'https://payment.direct.worldline-solutions.com/hostedtokenization/js/client/tokenizer.min.js',
                     ['server' => 'remote', 'priority' => 1, 'position' => 'head', 'attribute' => 'defer']
                 );
                 $this->context->controller->registerStylesheet(
