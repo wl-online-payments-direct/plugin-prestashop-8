@@ -5,8 +5,8 @@
 The Online Payments PHP SDK helps you to communicate with the Online Payments Server API. Its primary features are:
 
 * convenient PHP wrapper around the API calls and responses:
-    * marshalls PHP request objects to HTTP requests
-    * unmarshalls HTTP responses to PHP response objects or PHP exceptions
+  * marshalls PHP request objects to HTTP requests
+  * unmarshalls HTTP responses to PHP response objects or PHP exceptions
 * handling of all the details concerning authentication
 * handling of required metadata
 

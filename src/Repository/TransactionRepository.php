@@ -35,7 +35,7 @@ class TransactionRepository
      *
      * @param Db $db
      */
-    public function __construct(Db $db = null)
+    public function __construct(?Db $db = null)
     {
         if (null === $db) {
             $this->db = Db::getInstance();
