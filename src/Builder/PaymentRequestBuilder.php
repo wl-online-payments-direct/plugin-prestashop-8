@@ -36,6 +36,9 @@ class PaymentRequestBuilder extends AbstractRequestBuilder
 
     public const NO_CHALLENGE_REQUESTED_RISK_ANALYSIS_PERFORMED = 'no-challenge-requested-risk-analysis-performed';
     public const NO_CHALLENGE_REQUESTED = 'no-challenge-requested';
+
+    public const NO_CHALLENGE_REQUEST = 'no-challenge-request';
+
     /**
      * @return CardPaymentMethodSpecificInput
      *
@@ -72,15 +75,26 @@ class PaymentRequestBuilder extends AbstractRequestBuilder
         }
 
         $orderTotalInEuros = Tools::getAmountInEuros($this->context->cart->getOrderTotal(), new \Currency($this->context->cart->id_currency));
-        if (true === $this->settings->advancedSettings->threeDSExempted &&
-            $this->settings->advancedSettings->threeDSExemptedValue >= $orderTotalInEuros) {
-            $threeDSecure->setExemptionRequest($this->settings->advancedSettings->threeDSExemptedType);
-            $threeDSecure->setSkipAuthentication(true);
-            $threeDSecure->setSkipSoftDecline(false);
+        $is3dsOptionEnabled = (true === $this->settings->advancedSettings->threeDSExempted)
+            && ($this->settings->advancedSettings->threeDSExemptedValue >= $orderTotalInEuros);
+
+        $selectedType = (string) $this->settings->advancedSettings->threeDSExemptedType;
+        $isNoChallengePreference = $is3dsOptionEnabled && ($selectedType === self::NO_CHALLENGE_REQUEST);
+
+        if ($is3dsOptionEnabled) {
+            if ($isNoChallengePreference) {
+                $threeDSecure->setSkipAuthentication(false);
+                $threeDSecure->setChallengeIndicator(self::NO_CHALLENGE_REQUESTED);
+            } else {
+                $threeDSecure->setExemptionRequest($selectedType);
+                $threeDSecure->setSkipAuthentication(true);
+                $threeDSecure->setSkipSoftDecline(false);
+            }
         }
         if (true === $this->settings->advancedSettings->enforce3DS) {
             $threeDSecure->setChallengeIndicator(self::CHALLENGE_INDICATOR_REQUIRED);
         }
+
         $cardPaymentMethodSpecificInput->setThreeDSecure($threeDSecure);
 
         if (true === $this->settings->advancedSettings->force3DsV2) {
@@ -96,17 +110,29 @@ class PaymentRequestBuilder extends AbstractRequestBuilder
                 $paymentProduct130ThreeDSecure->setAcquirerExemption(false);
             } elseif ($this->settings->advancedSettings->threeDSExempted) {
                 if ($this->settings->advancedSettings->threeDSExemptedValue >= $orderTotalInEuros) {
-                    $threeDSExemptedType = $this->settings->advancedSettings->threeDSExemptedType;
-                    $paymentProduct130ThreeDSecure->setAcquirerExemption($threeDSExemptedType === self::TRANSACTION_RISK_ANALYSIS_EXEMPTION);
-                    $threeDSecure->setSkipAuthentication(false);
-                    $threeDSecure->setExemptionRequest($threeDSExemptedType);
-                    $threeDSecure->setSkipSoftDecline(false);
-                    $threeDSecure->setChallengeIndicator(
-                        match ($threeDSExemptedType) {
-                            self::TRANSACTION_RISK_ANALYSIS_EXEMPTION => self::NO_CHALLENGE_REQUESTED_RISK_ANALYSIS_PERFORMED,
-                            self::LOW_VALUE_EXEMPTION => self::NO_CHALLENGE_REQUESTED,
-                        }
-                    );
+
+                    $threeDSExemptedType = (string) $this->settings->advancedSettings->threeDSExemptedType;
+
+                    if ($threeDSExemptedType === self::NO_CHALLENGE_REQUEST) {
+                        $paymentProduct130ThreeDSecure->setAcquirerExemption(false);
+
+                        $threeDSecure->setSkipAuthentication(false);
+                        $threeDSecure->setChallengeIndicator(self::NO_CHALLENGE_REQUESTED);
+                    } else {
+                        $paymentProduct130ThreeDSecure->setAcquirerExemption(
+                            $threeDSExemptedType === self::TRANSACTION_RISK_ANALYSIS_EXEMPTION
+                        );
+
+                        $threeDSecure->setSkipAuthentication(false);
+                        $threeDSecure->setExemptionRequest($threeDSExemptedType);
+                        $threeDSecure->setSkipSoftDecline(false);
+                        $threeDSecure->setChallengeIndicator(
+                            match ($threeDSExemptedType) {
+                                self::TRANSACTION_RISK_ANALYSIS_EXEMPTION => self::NO_CHALLENGE_REQUESTED_RISK_ANALYSIS_PERFORMED,
+                                self::LOW_VALUE_EXEMPTION => self::NO_CHALLENGE_REQUESTED,
+                            }
+                        );
+                    }
                 } else {
                     $paymentProduct130ThreeDSecure->setAcquirerExemption(false);
                 }

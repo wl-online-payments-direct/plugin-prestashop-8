@@ -4,12 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.25] - 2025-21-01
+## [2.0.26] - 2026-26-01
+### Improved
+- Improve exemptions capabilities
+### Fixed
+- Fix checkout styling on mobile devices
+
+## [2.0.25] - 2026-21-01
 ### Fixed
 - Fix deprecated warnings on PHP 8.4
 - Update SDK to 6.2.0
 
-## [2.0.24] - 2025-19-01
+## [2.0.24] - 2026-19-01
 ### Fixed
 - Updated: Default API endpoint branding
 
