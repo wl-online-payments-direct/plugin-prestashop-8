@@ -103,8 +103,13 @@ class WorldlineopStoredCardsModuleFrontController extends ModuleFrontController
         /** @var \OnlinePayments\Sdk\Merchant\MerchantClient $merchantClient */
         $merchantClient = $this->module->getService('worldlineop.sdk.client');
         try {
+            $this->module->getLogger()->debug(
+                'Deleting stored card token',
+                ['request' => ['tokenId' => $storedCard->value]]
+            );
             $merchantClient->tokens()->deleteToken($storedCard->value);
             $delete = $tokenRepository->delete($storedCard);
+            $this->module->getLogger()->info('Deleted stored card:' .$storedCard->card_number);
         } catch (Exception $e) {
             $this->module->getLogger()->error($e->getMessage());
             $this->errors[] = $this->module->l('Could not delete stored card.', 'storedcards');
