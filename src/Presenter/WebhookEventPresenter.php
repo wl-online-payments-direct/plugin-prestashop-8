@@ -28,6 +28,7 @@ class WebhookEventPresenter implements PresenterInterface
 {
     public const CVCO_PRODUCT_ID = 5403;
     public const MEALVOUCHER_PRODUCT_ID = 5402;
+    public const ILLICADO_PRODUCT_ID = 3112;
     public const EVENTS_PAYMENT_AUTHORIZED = [
         'payment.pending_approval',
         'payment.pending_completion',
@@ -125,7 +126,9 @@ class WebhookEventPresenter implements PresenterInterface
         $amountOfMoney = $paymentOutput->getAmountOfMoney() ? $paymentOutput->getAmountOfMoney()->getAmount() : null;
         $acquiredAmount = $paymentOutput->getAcquiredAmount() ? $paymentOutput->getAcquiredAmount()->getAmount() : null;
 
-        if ($paymentProductId === self::CVCO_PRODUCT_ID || $paymentProductId === self::MEALVOUCHER_PRODUCT_ID) {
+        if ($paymentProductId === self::CVCO_PRODUCT_ID
+            || $paymentProductId === self::MEALVOUCHER_PRODUCT_ID
+            || $paymentProductId === self::ILLICADO_PRODUCT_ID) {
             return $amountOfMoney && $acquiredAmount && ($amountOfMoney === $acquiredAmount);
         }
 

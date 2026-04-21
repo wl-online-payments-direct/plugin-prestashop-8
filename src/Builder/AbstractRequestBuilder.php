@@ -37,6 +37,7 @@ use OnlinePayments\Sdk\Domain\RedirectionData;
 use OnlinePayments\Sdk\Domain\RedirectPaymentMethodSpecificInput;
 use OnlinePayments\Sdk\Domain\RedirectPaymentProduct5403SpecificInput;
 use OnlinePayments\Sdk\Domain\RedirectPaymentProduct5402SpecificInput;
+use OnlinePayments\Sdk\Domain\RedirectPaymentProduct3112SpecificInput;
 use OnlinePayments\Sdk\Domain\Shipping;
 use OnlinePayments\Sdk\Domain\SurchargeSpecificInput;
 use RandomLib\Factory;
@@ -58,6 +59,7 @@ abstract class AbstractRequestBuilder implements PaymentRequestBuilderInterface
     public const PRODUCT_ID_CVCO = 5403;
     public const PRODUCT_ID_MEALVOUCHER = 5402;
     public const PRODUCT_ID_PLEDG = 5300;
+    public const PRODUCT_ID_ILLICADO = 3112;
 
     public const PHONE_NUMBER_MAX_CHARS = 15;
 
@@ -146,7 +148,8 @@ abstract class AbstractRequestBuilder implements PaymentRequestBuilderInterface
         }
           if ($this->idProduct == self::PRODUCT_ID_MEALVOUCHER
               || (int) $this->idProduct === self::PRODUCT_ID_CVCO
-              || (int) $this->idProduct === self::PRODUCT_ID_PLEDG) {
+              || (int) $this->idProduct === self::PRODUCT_ID_PLEDG
+              || (int) $this->idProduct === self::PRODUCT_ID_ILLICADO) {
             $redirectPaymentMethodSpecificInput->setRequiresApproval(false);
         } else {
             $redirectPaymentMethodSpecificInput->setRequiresApproval(
@@ -167,6 +170,10 @@ abstract class AbstractRequestBuilder implements PaymentRequestBuilderInterface
         $product5402SpecificInput = new RedirectPaymentProduct5402SpecificInput();
         $product5402SpecificInput->setCompleteRemainingPaymentAmount(true);
         $redirectPaymentMethodSpecificInput->setPaymentProduct5402SpecificInput($product5402SpecificInput);
+
+        $product3112SpecificInput = new RedirectPaymentProduct3112SpecificInput();
+        $product3112SpecificInput->setCompleteRemainingPaymentAmount(true);
+        $redirectPaymentMethodSpecificInput->setPaymentProduct3112SpecificInput($product3112SpecificInput);
 
         return $redirectPaymentMethodSpecificInput;
     }

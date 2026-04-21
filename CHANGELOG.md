@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.32] - 2026-15-04
+### Fixed
+- Remove CREATED operations from the operations display on the order details page
+### Changed
+- Correct display of payment method name for split payment transactions
+
+## [2.0.31] - 2026-01-04
+### Changed
+- Separate shipping costs from product line items in the API request
+### Added
+- Added SECURITY.md file
+
+## [2.0.30] - 2026-31-03
+### Added
+- Added: Support of Illicado payment method
+
 ## [2.0.29] - 2026-26-03
 ### Fixed
 - Order incorrectly set to "Payment error" when delayed payment confirmation webhook arrives for an already created order

@@ -14,11 +14,12 @@
 
 <h1>
   {l s='What\'s new in version' mod='worldlineop'}
-  2.0.29
+  2.0.32
 </h1>
 <br>
 <ul>
-  <li>{l s='Fix order incorrectly set to Payment error when delayed payment confirmation webhook arrives for an already created order' mod='worldlineop'}</li>
+  <li>{l s='Fixed: Remove CREATED operations from the operations display on the order details page' mod='worldlineop'}</li>
+  <li>{l s='Changed: Correct display of payment method name for split payment transactions' mod='worldlineop'}</li>
 </ul>
 <br>
 <hr>

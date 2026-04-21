@@ -38,6 +38,7 @@ use WorldlineOP\PrestaShop\Utils\Tools;
  */
 class TransactionPresenter implements PresenterInterface
 {
+    public const STATUS_PAYMENT_CREATED = 'CREATED';
     public const STATUS_REFUND_REQUESTED = 'REFUND_REQUESTED';
     public const STATUS_CAPTURE_REQUESTED = 'CAPTURE_REQUESTED';
     public const STATUS_PAYMENT_CAPTURED = 'CAPTURED';
@@ -89,6 +90,7 @@ class TransactionPresenter implements PresenterInterface
         if ($paymentDetails) {
             foreach ($paymentDetails->getOperations() as $paymentDetail) {
                 if (!in_array($paymentDetail->getStatus(), array(
+                    self::STATUS_PAYMENT_CREATED,
                     self::STATUS_PAYMENT_REFUNDED,
                     self::STATUS_REFUND_REQUESTED,
                     self::STATUS_PAYMENT_REJECTED
