@@ -1,0 +1,9 @@
+{% extends '@PrestaShop/Admin/TwigTemplateForm/prestashop_ui_kit_base.html.twig' %}
+
+{% block gift_card_tab_widget %}
+<div {{ block('widget_attributes') }}>
+    <h2>{{ 'Gift card specific configuration'|trans({}, 'Modules.Worldlineop.Admin') }}</h2>
+    <p class="subtitle">{{ 'Please configure this section in case you accept gift cards as payment methods with Worldline Online Payments'|trans({}, 'Modules.Worldlineop.Admin') }}</p>
+    {{ form_row(form.gift_card_type) }}
+</div>
+{% endblock %}

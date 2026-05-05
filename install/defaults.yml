@@ -32,6 +32,8 @@ hooks:
   - 'displayPDFInvoice'
   - 'displayAdminProductsExtra'
   - 'actionProductUpdate'
+  - 'actionProductFormBuilderModifier'
+  - 'actionAfterUpdateProductFormHandler'
 orderStatuses:
   - configKey: 'WOP_PENDING_ORDER_STATUS_ID'
     color: '#34209E'

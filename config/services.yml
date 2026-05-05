@@ -1,0 +1,16 @@
+# Services loaded into the PS Symfony kernel container only (not ModuleLibServiceContainer).
+# Used for Symfony form types and modifiers that require PS Symfony services.
+services:
+
+  WorldlineOP\PrestaShop\Form\Type\GiftCardTabType:
+    class: WorldlineOP\PrestaShop\Form\Type\GiftCardTabType
+    parent: 'form.type.translatable.aware'
+    public: true
+    tags:
+      - { name: form.type }
+
+  WorldlineOP\PrestaShop\Form\Modifier\ProductFormModifier:
+    class: WorldlineOP\PrestaShop\Form\Modifier\ProductFormModifier
+    public: true
+    arguments:
+      $formBuilderModifier: '@form.form_builder_modifier'

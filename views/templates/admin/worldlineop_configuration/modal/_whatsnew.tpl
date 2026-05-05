@@ -14,12 +14,13 @@
 
 <h1>
   {l s='What\'s new in version' mod='worldlineop'}
-  2.0.32
+  2.0.33
 </h1>
 <br>
 <ul>
-  <li>{l s='Fixed: Remove CREATED operations from the operations display on the order details page' mod='worldlineop'}</li>
-  <li>{l s='Changed: Correct display of payment method name for split payment transactions' mod='worldlineop'}</li>
+  <li>{l s='Fixed one-cent payload total drift' mod='worldlineop'}</li>
+  <li>{l s='Fixed partial capture error' mod='worldlineop'}</li>
+  <li>{l s='Added compatibility for Mealvouchers for Prestashop 9' mod='worldlineop'}</li>
 </ul>
 <br>
 <hr>
