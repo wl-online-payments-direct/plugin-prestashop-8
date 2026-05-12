@@ -14,13 +14,11 @@
 
 <h1>
   {l s='What\'s new in version' mod='worldlineop'}
-  2.0.33
+  2.0.34
 </h1>
 <br>
 <ul>
-  <li>{l s='Fixed one-cent payload total drift' mod='worldlineop'}</li>
-  <li>{l s='Fixed partial capture error' mod='worldlineop'}</li>
-  <li>{l s='Added compatibility for Mealvouchers for Prestashop 9' mod='worldlineop'}</li>
+  <li>{l s='Fixed CB logo' mod='worldlineop'}</li>
 </ul>
 <br>
 <hr>
