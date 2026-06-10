@@ -14,11 +14,11 @@
 
 <h1>
   {l s='What\'s new in version' mod='worldlineop'}
-  2.0.34
+  2.0.35
 </h1>
 <br>
 <ul>
-  <li>{l s='Fixed CB logo' mod='worldlineop'}</li>
+  <li>{l s='Fixed product page not loading on Prestashop 8.1-9.0' mod='worldlineop'}</li>
 </ul>
 <br>
 <hr>

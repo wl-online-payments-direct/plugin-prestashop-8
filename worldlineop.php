@@ -41,7 +41,7 @@ class Worldlineop extends PaymentModule
     {
         $this->name = 'worldlineop';
         $this->author = 'Worldline Online Payments';
-        $this->version = '2.0.34';
+        $this->version = '2.0.35';
         $this->tab = 'payments_gateways';
         $this->module_key = '089d13d0218de8085259e542483f4438';
         $this->currencies = true;
@@ -397,8 +397,8 @@ class Worldlineop extends PaymentModule
         // PS 8.1+: editable field lives in the dedicated Worldline tab (hookActionProductFormBuilderModifier).
         // Show read-only summary here.
         if (Tools::version_compare(_PS_VERSION_, '8.1.0', '>=')) {
-            $twig = $this->getTwig();
-            if ($twig === null) {
+            $twig = method_exists($this, 'getTwig') ? $this->getTwig() : $this->get('twig');
+            if (!$twig) {
                 return '';
             }
 
