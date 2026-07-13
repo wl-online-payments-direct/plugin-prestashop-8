@@ -25,7 +25,7 @@ function upgrade_module_1_3_1($module)
 {
     $logger = $module->getLogger()->withName('Upgrade_1_3_1');
     $logger->info('Upgrade to v1.3.1 started');
-    /** @var \WorldlineOP\PrestaShop\Configuration\Loader\SettingsLoader $settingsLoader */
+    /** @var WorldlineOP\PrestaShop\Configuration\Loader\SettingsLoader $settingsLoader */
     $settingsLoader = $module->getService('worldlineop.settings.loader');
     $settingsArray = $settingsLoader->normalize();
 
@@ -35,7 +35,7 @@ function upgrade_module_1_3_1($module)
     $paymentSettings['paymentSettings']['safetyDelay'] = 12;
     $paymentMethodsSettings = [];
     Shop::setContext(Shop::CONTEXT_ALL);
-    /** @var \WorldlineOP\PrestaShop\Configuration\Updater\AdvancedSettingsUpdater $advancedSettingsUpdater */
+    /** @var WorldlineOP\PrestaShop\Configuration\Updater\AdvancedSettingsUpdater $advancedSettingsUpdater */
     $advancedSettingsUpdater = $module->getService('worldlineop.settings.advanced_settings.updater');
     if (Configuration::hasContext('WORLDLINEOP_ADVANCED_SETTINGS', null, Shop::getContext())) {
         try {
@@ -72,7 +72,7 @@ function upgrade_module_1_3_1($module)
 }
 
 /**
- * @param \WorldlineOP\PrestaShop\Configuration\Updater\AdvancedSettingsUpdater $advancedSettingsUpdater
+ * @param WorldlineOP\PrestaShop\Configuration\Updater\AdvancedSettingsUpdater $advancedSettingsUpdater
  * @param array $array
  *
  * @return void

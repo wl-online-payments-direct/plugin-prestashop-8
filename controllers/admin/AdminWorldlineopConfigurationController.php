@@ -14,6 +14,7 @@
 if (!defined('_PS_VERSION_')) {
     exit;
 }
+use OnlinePayments\Sdk\Authentication\V1HmacAuthenticator;
 use OnlinePayments\Sdk\Client;
 use OnlinePayments\Sdk\Communicator;
 use OnlinePayments\Sdk\CommunicatorConfiguration;
@@ -21,7 +22,6 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use WorldlineOP\PrestaShop\Configuration\Entity\AccountSettings;
 use WorldlineOP\PrestaShop\Configuration\Entity\Settings;
 use WorldlineOP\PrestaShop\Exception\ExceptionList;
-use OnlinePayments\Sdk\Authentication\V1HmacAuthenticator;
 
 /**
  * Class AdminWorldlineopConfigurationController
@@ -60,16 +60,16 @@ class AdminWorldlineopConfigurationController extends ModuleAdminController
     {
         parent::setMedia($isNewTheme);
         $this->context->controller->addCSS([$this->module->getPathUri() . '/views/css/config.css']);
-        /** @var \WorldlineOP\PrestaShop\Configuration\Entity\Settings $settings */
+        /** @var Settings $settings */
         $settings = $this->module->getService('worldlineop.settings');
-        //@formatter:off
+        // @formatter:off
         Media::addJsDef([
             'worldlineopAjaxToken' => Tools::getAdminTokenLite('AdminWorldlineopAjax'),
             'genericErrorMessage' => $this->module->l('An error occurred during the process, please try again', 'AdminWorldlineopConfigurationController'),
             'showWhatsNew' => $settings->advancedSettings->displayWhatsNew === true,
             'copyMessage' => $this->module->l('Copied!', 'AdminWorldlineopConfigurationController'),
         ]);
-        //@formatter:on
+        // @formatter:on
     }
 
     public function setModals()
@@ -77,14 +77,14 @@ class AdminWorldlineopConfigurationController extends ModuleAdminController
         $this->context->smarty->assign([
             'loader' => $this->module->getPathUri() . '/views/img/icons/loader.svg',
         ]);
-        //@formatter:off
+        // @formatter:off
         $this->modals[] = [
             'modal_id' => 'worldlineop-modal-whatsnew',
             'modal_class' => 'modal-lg',
             'modal_title' => $this->module->l('Latest version - What\'s new?', 'AdminWorldlineopConfigurationController'),
             'modal_content' => $this->createTemplate('modal/_loading.tpl')->fetch(),
         ];
-        //@formatter:on
+        // @formatter:on
     }
 
     /**
@@ -93,7 +93,7 @@ class AdminWorldlineopConfigurationController extends ModuleAdminController
     public function initContent()
     {
         $this->setModals();
-        /** @var \WorldlineOP\PrestaShop\Presenter\ModuleConfigurationPresenter $presenter */
+        /** @var WorldlineOP\PrestaShop\Presenter\ModuleConfigurationPresenter $presenter */
         $presenter = $this->module->getService('worldlineop.settings.presenter');
         $data = empty($this->postedData)
             ? $presenter->present()
@@ -128,7 +128,7 @@ class AdminWorldlineopConfigurationController extends ModuleAdminController
 
     public function saveAccount()
     {
-        /** @var \WorldlineOP\PrestaShop\Configuration\Updater\AccountSettingsUpdater $updater */
+        /** @var WorldlineOP\PrestaShop\Configuration\Updater\AccountSettingsUpdater $updater */
         $updater = $this->module->getService('worldlineop.settings.account.updater');
         $form = Tools::getValue('worldlineopAccountSettings');
         $form = $updater->forceResolve($form);
@@ -145,9 +145,9 @@ class AdminWorldlineopConfigurationController extends ModuleAdminController
 
             return;
         }
-        //@formatter:off
+        // @formatter:off
         $this->confirmations[] = $this->module->l('Account settings saved successfully.', 'AdminWorldlineopConfigurationController');
-        //@formatter:on
+        // @formatter:on
     }
 
     /**
@@ -156,12 +156,12 @@ class AdminWorldlineopConfigurationController extends ModuleAdminController
     public function testCredentials()
     {
         $form = Tools::getValue('worldlineopAccountSettings');
-        /** @var \WorldlineOP\PrestaShop\Configuration\Updater\AccountSettingsUpdater $accountUpdater */
+        /** @var WorldlineOP\PrestaShop\Configuration\Updater\AccountSettingsUpdater $accountUpdater */
         $accountUpdater = $this->module->getService('worldlineop.settings.account.updater');
         $form = $accountUpdater->forceResolve($form);
         $accountTested = new AccountSettings();
         $accountTested = $accountUpdater->forceDenormalize($form, $accountTested);
-        /** @var \WorldlineOP\PrestaShop\Configuration\Entity\Settings $savedSettings */
+        /** @var Settings $savedSettings */
         $savedSettings = $this->module->getService('worldlineop.settings');
         $settings = new Settings();
         $settings->accountSettings = $accountTested;
@@ -184,18 +184,17 @@ class AdminWorldlineopConfigurationController extends ModuleAdminController
             return false;
         }
         if ($testResponse->getResult() !== 'OK') {
-            //@formatter:off
+            // @formatter:off
             $this->errors[] = $this->module->l('Please verify your credentials', 'AdminWorldlineopConfigurationController');
-            //@formatter:on
+            // @formatter:on
 
             return false;
-        } else {
-            //@formatter:off
-            $this->confirmations[] = $this->module->l('Account credentials are valid.', 'AdminWorldlineopConfigurationController');
-            //@formatter:on
-
-            return true;
         }
+        // @formatter:off
+        $this->confirmations[] = $this->module->l('Account credentials are valid.', 'AdminWorldlineopConfigurationController');
+        // @formatter:on
+
+        return true;
     }
 
     /**
@@ -203,9 +202,9 @@ class AdminWorldlineopConfigurationController extends ModuleAdminController
      */
     public function updatePaymentMethods()
     {
-        /** @var \WorldlineOP\PrestaShop\Configuration\Product\GetProductsRequest $getProductsService */
+        /** @var WorldlineOP\PrestaShop\Configuration\Product\GetProductsRequest $getProductsService */
         $getProductsService = $this->module->getService('worldlineop.settings.get_products');
-        /** @var \WorldlineOP\PrestaShop\Configuration\Updater\PaymentMethodsSettingsUpdater $updater */
+        /** @var WorldlineOP\PrestaShop\Configuration\Updater\PaymentMethodsSettingsUpdater $updater */
         $updater = $this->module->getService('worldlineop.settings.payment_methods.updater');
         try {
             $iframeProducts = $getProductsService->request('iframe');
@@ -222,7 +221,7 @@ class AdminWorldlineopConfigurationController extends ModuleAdminController
     public function processSaveAdvancedSettingsForm()
     {
         $this->activeTab = self::TAB_ADVANCED_SETTINGS;
-        /** @var \WorldlineOP\PrestaShop\Configuration\Updater\AdvancedSettingsUpdater $updater */
+        /** @var WorldlineOP\PrestaShop\Configuration\Updater\AdvancedSettingsUpdater $updater */
         $updater = $this->module->getService('worldlineop.settings.advanced_settings.updater');
         $form = Tools::getValue('worldlineopAdvancedSettings');
         try {
@@ -232,15 +231,15 @@ class AdminWorldlineopConfigurationController extends ModuleAdminController
 
             return;
         }
-        //@formatter:off
+        // @formatter:off
         $this->confirmations[] = $this->module->l('Advanced settings saved successfully', 'AdminWorldlineopConfigurationController');
-        //@formatter:on
+        // @formatter:on
     }
 
     public function processSavePaymentMethodsSettingsForm()
     {
         $this->activeTab = self::TAB_PAYMENT_METHODS;
-        /** @var \WorldlineOP\PrestaShop\Configuration\Updater\PaymentMethodsSettingsUpdater $updater */
+        /** @var WorldlineOP\PrestaShop\Configuration\Updater\PaymentMethodsSettingsUpdater $updater */
         $updater = $this->module->getService('worldlineop.settings.payment_methods.updater');
         $form = Tools::getValue('worldlineopPaymentMethodsSettings');
         try {
@@ -254,8 +253,8 @@ class AdminWorldlineopConfigurationController extends ModuleAdminController
         } catch (Exception $e) {
             $this->errors[] = $e->getMessage();
         }
-        //@formatter:off
+        // @formatter:off
         $this->confirmations[] = $this->module->l('Payment methods settings saved successfully', 'AdminWorldlineopConfigurationController');
-        //@formatter:on
+        // @formatter:on
     }
 }

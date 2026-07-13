@@ -110,7 +110,6 @@ class PaymentRequestBuilder extends AbstractRequestBuilder
                 $paymentProduct130ThreeDSecure->setAcquirerExemption(false);
             } elseif ($this->settings->advancedSettings->threeDSExempted) {
                 if ($this->settings->advancedSettings->threeDSExemptedValue >= $orderTotalInEuros) {
-
                     $threeDSExemptedType = (string) $this->settings->advancedSettings->threeDSExemptedType;
 
                     if ($threeDSExemptedType === self::NO_CHALLENGE_REQUEST) {
@@ -130,6 +129,7 @@ class PaymentRequestBuilder extends AbstractRequestBuilder
                             match ($threeDSExemptedType) {
                                 self::TRANSACTION_RISK_ANALYSIS_EXEMPTION => self::NO_CHALLENGE_REQUESTED_RISK_ANALYSIS_PERFORMED,
                                 self::LOW_VALUE_EXEMPTION => self::NO_CHALLENGE_REQUESTED,
+                                default => self::NO_CHALLENGE_REQUESTED,
                             }
                         );
                     }

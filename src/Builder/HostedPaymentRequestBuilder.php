@@ -18,7 +18,6 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-use Language;
 use OnlinePayments\Sdk\Domain\AmountOfMoney;
 use OnlinePayments\Sdk\Domain\CardPaymentMethodSpecificInput;
 use OnlinePayments\Sdk\Domain\CardPaymentMethodSpecificInputForHostedCheckout;
@@ -58,7 +57,7 @@ class HostedPaymentRequestBuilder extends AbstractRequestBuilder
     public const NO_CHALLENGE_REQUEST = 'no-challenge-request';
     public const NO_CHALLENGE_REQUESTED_RISK_ANALYSIS_PERFORMED = 'no-challenge-requested-risk-analysis-performed';
     public const NO_CHALLENGE_REQUESTED = 'no-challenge-requested';
-    const MEALVOUCHER_PRODUCT_ID = 5402;
+    public const MEALVOUCHER_PRODUCT_ID = 5402;
 
     /**
      * @return HostedCheckoutSpecificInput|null
@@ -68,11 +67,14 @@ class HostedPaymentRequestBuilder extends AbstractRequestBuilder
     public function buildHostedCheckoutSpecificInput()
     {
         $hostedCheckoutSpecificInput = new HostedCheckoutSpecificInput();
+        $hostedCheckoutSpecificInput->setShowResultPage(
+            $this->settings->advancedSettings->displayPaymentConfirmationPage
+        );
         if ($this->settings->paymentMethodsSettings->redirectTemplateFilename) {
             $hostedCheckoutSpecificInput->setVariant($this->settings->paymentMethodsSettings->redirectTemplateFilename);
         }
-        $cartIsoLang = Language::getIsoById($this->context->cart->id_lang);
-        $hostedCheckoutSpecificInput->setLocale(str_replace('-', '_', Language::getLocaleByIso($cartIsoLang)));
+        $cartIsoLang = \Language::getIsoById($this->context->cart->id_lang);
+        $hostedCheckoutSpecificInput->setLocale(str_replace('-', '_', \Language::getLocaleByIso($cartIsoLang)));
         $hostedCheckoutSpecificInput->setReturnUrl(
             $this->context->link->getModuleLink($this->module->name, 'redirect', ['action' => 'redirectReturnHosted'])
         );
@@ -200,6 +202,7 @@ class HostedPaymentRequestBuilder extends AbstractRequestBuilder
                             match ($threeDSExemptedType) {
                                 self::TRANSACTION_RISK_ANALYSIS_EXEMPTION => self::NO_CHALLENGE_REQUESTED_RISK_ANALYSIS_PERFORMED,
                                 self::LOW_VALUE_EXEMPTION => self::NO_CHALLENGE_REQUESTED,
+                                default => self::NO_CHALLENGE_REQUESTED,
                             }
                         );
                     }
@@ -224,6 +227,7 @@ class HostedPaymentRequestBuilder extends AbstractRequestBuilder
 
     /**
      * @return MobilePaymentMethodHostedCheckoutSpecificInput|false
+     *
      * @throws \Exception
      */
     public function buildMobilePaymentMethodSpecificInput()
@@ -237,7 +241,7 @@ class HostedPaymentRequestBuilder extends AbstractRequestBuilder
 
         $mobilePaymentMethodSpecificInput = new MobilePaymentMethodHostedCheckoutSpecificInput();
         if (false !== $this->idProduct) {
-            $mobilePaymentMethodSpecificInput->setPaymentProductId((int)$this->idProduct);
+            $mobilePaymentMethodSpecificInput->setPaymentProductId((int) $this->idProduct);
         }
         $mobilePaymentMethodSpecificInput->setAuthorizationMode(
             $this->settings->advancedSettings->paymentSettings->transactionType
@@ -283,6 +287,7 @@ class HostedPaymentRequestBuilder extends AbstractRequestBuilder
                             match ($threeDSExemptionType) {
                                 self::TRANSACTION_RISK_ANALYSIS_EXEMPTION => self::NO_CHALLENGE_REQUESTED_RISK_ANALYSIS_PERFORMED,
                                 self::LOW_VALUE_EXEMPTION => self::NO_CHALLENGE_REQUESTED,
+                                default => self::NO_CHALLENGE_REQUESTED,
                             }
                         );
                     }
@@ -330,15 +335,15 @@ class HostedPaymentRequestBuilder extends AbstractRequestBuilder
 
         $order->setReferences($orderReferences);
         try {
-            $productId = (int)$this->idProduct === self::MEALVOUCHER_PRODUCT_ID ? self::MEALVOUCHER_PRODUCT_ID : null;
+            $productId = (int) $this->idProduct === self::MEALVOUCHER_PRODUCT_ID ? self::MEALVOUCHER_PRODUCT_ID : null;
             $shoppingCartPresented = $this->shoppingCartPresenter->present($this->context->cart, $productId);
         } catch (\Exception $e) {
             return $order;
         }
-        if ((int)$this->idProduct !== self::MEALVOUCHER_PRODUCT_ID) {
+        if ((int) $this->idProduct !== self::MEALVOUCHER_PRODUCT_ID) {
             $shipping = $order->getShipping();
-            $shipping->setShippingCost((int)(string)$shoppingCartPresented['shipping']['priceWithoutTax']);
-            $shipping->setShippingCostTax((int)(string)$shoppingCartPresented['shipping']['tax']);
+            $shipping->setShippingCost((int) (string) $shoppingCartPresented['shipping']['priceWithoutTax']);
+            $shipping->setShippingCostTax((int) (string) $shoppingCartPresented['shipping']['tax']);
             $order->setShipping($shipping);
         }
         $shoppingCart = new ShoppingCart();
@@ -347,7 +352,7 @@ class HostedPaymentRequestBuilder extends AbstractRequestBuilder
             $item = new LineItem();
             $itemAmount = new AmountOfMoney();
             $amount = (int) (string) $product['totalWithTax'];
-            if ((int)$this->idProduct === self::MEALVOUCHER_PRODUCT_ID) {
+            if ((int) $this->idProduct === self::MEALVOUCHER_PRODUCT_ID) {
                 // adding shipping price to the product price for meal vouchers
                 $amount += (int) (string) $shoppingCartPresented['shipping']['priceWithTax'];
             }
@@ -356,7 +361,7 @@ class HostedPaymentRequestBuilder extends AbstractRequestBuilder
             $item->setAmountOfMoney($itemAmount);
             $itemLineDetails = new OrderLineDetails();
             $price = (int) (string) $product['productPrice'];
-            if ((int)$this->idProduct === self::MEALVOUCHER_PRODUCT_ID) {
+            if ((int) $this->idProduct === self::MEALVOUCHER_PRODUCT_ID) {
                 // adding shipping price to the product price for meal vouchers
                 $price += (int) (string) $shoppingCartPresented['shipping']['priceWithTax'];
             }
@@ -379,15 +384,15 @@ class HostedPaymentRequestBuilder extends AbstractRequestBuilder
         return $order;
     }
 
-    function buildGroupedLineItems(array $shoppingCartPresented): array
+    public function buildGroupedLineItems(array $shoppingCartPresented): array
     {
         $itemsByGroupKey = [];
 
         foreach ($shoppingCartPresented['products'] as $product) {
             $productId = $product['productId'];
-            $price = (int)(string)$product['productPrice'];
-            $tax = (int)(string)$product['tax'];
-            $discount = (int)(string)$product['discountPrice'];
+            $price = (int) (string) $product['productPrice'];
+            $tax = (int) (string) $product['tax'];
+            $discount = (int) (string) $product['discountPrice'];
 
             // Composite key to distinguish products with different pricing
             $groupKey = "{$productId}_{$price}";
@@ -396,7 +401,7 @@ class HostedPaymentRequestBuilder extends AbstractRequestBuilder
                 // Create new LineItem
                 $item = new LineItem();
                 $itemAmount = new AmountOfMoney();
-                $itemAmount->setAmount((int)(string)$product['totalWithTax']);
+                $itemAmount->setAmount((int) (string) $product['totalWithTax']);
                 $itemAmount->setCurrencyCode(
                     Tools::getIsoCurrencyCodeById($shoppingCartPresented['cart']->id_currency)
                 );
@@ -425,7 +430,7 @@ class HostedPaymentRequestBuilder extends AbstractRequestBuilder
 
                 $existingAmount = $existingItem->getAmountOfMoney()->getAmount();
                 $existingItem->getAmountOfMoney()->setAmount(
-                    $existingAmount + (int)(string)$product['totalWithTax']
+                    $existingAmount + (int) (string) $product['totalWithTax']
                 );
             }
         }

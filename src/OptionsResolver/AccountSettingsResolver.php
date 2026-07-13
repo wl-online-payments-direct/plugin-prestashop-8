@@ -120,6 +120,7 @@ class AccountSettingsResolver extends AbstractSettingsResolver
                     if (is_array($value)) {
                         return array_filter(array_map('trim', $value));
                     }
+
                     return $value;
                 }
             );

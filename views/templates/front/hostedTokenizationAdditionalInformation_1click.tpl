@@ -18,16 +18,16 @@
     <ul>
       <li>
         {l s='Initial total:' mod='worldlineop'}
-        {$tokenSurcharge.amountWithoutSurcharge|escape:'htmlall':'UTF-8'} {$tokenSurcharge.currencyIso}
+        {$tokenSurcharge.amountWithoutSurcharge|escape:'htmlall':'UTF-8'} {$tokenSurcharge.currencyIso|escape:'htmlall':'UTF-8'}
       </li>
       <li>
         {l s='Surcharge amount:' mod='worldlineop'}
-        {$tokenSurcharge.surchargeAmount|escape:'htmlall':'UTF-8'} {$tokenSurcharge.currencyIso}
+        {$tokenSurcharge.surchargeAmount|escape:'htmlall':'UTF-8'} {$tokenSurcharge.currencyIso|escape:'htmlall':'UTF-8'}
       </li>
       <li>
         <b>
           {l s='Total amount with surcharge:' mod='worldlineop'}
-          {$tokenSurcharge.amountWithSurcharge|escape:'htmlall':'UTF-8'} {$tokenSurcharge.currencyIso}
+          {$tokenSurcharge.amountWithSurcharge|escape:'htmlall':'UTF-8'} {$tokenSurcharge.currencyIso|escape:'htmlall':'UTF-8'}
         </b>
       </li>
     </ul>

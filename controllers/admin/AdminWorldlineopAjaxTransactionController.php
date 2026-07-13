@@ -36,20 +36,20 @@ class AdminWorldlineopAjaxTransactionController extends ModuleAdminController
     {
         $transaction = Tools::getValue('transaction');
         if (!$this->access('edit')) {
-            //@formatter:off
+            // @formatter:off
             $this->context->smarty->assign([
                 'worldlineopAjaxTransactionError' => $this->module->l('You do not have permission to capture funds.', 'AdminWorldlineopAjaxTransactionController'),
             ]);
-            //@formatter:on
-            die(json_encode([
-                'result_html' => $this->module->hookAdminOrderCommon((int) $transaction['idOrder']),
+            // @formatter:on
+            exit(json_encode([
+                'result_html' => $this->module->renderAdminOrderContent((int) $transaction['idOrder']),
             ]));
         }
 
-        /** @var \OnlinePayments\Sdk\Merchant\MerchantClient $merchantClient */
+        /** @var OnlinePayments\Sdk\Merchant\MerchantClient $merchantClient */
         $merchantClient = $this->module->getService('worldlineop.sdk.client');
 
-        $pow = \WorldlineOP\PrestaShop\Utils\Tools::getCurrencyDecimalByIso($transaction['currencyCode']);
+        $pow = WorldlineOP\PrestaShop\Utils\Tools::getCurrencyDecimalByIso($transaction['currencyCode']);
         $capturePaymentRequest = new CapturePaymentRequest();
         $capturePaymentRequest->setAmount((int) Decimal::multiply((string) $transaction['amountToCapture'], (string) pow(10, $pow))->getIntegerPart());
         try {
@@ -66,15 +66,15 @@ class AdminWorldlineopAjaxTransactionController extends ModuleAdminController
             if (in_array($captureResponse->getStatus(), ['CAPTURED', 'CAPTURE_REQUESTED'])) {
                 $this->context->smarty->assign('captureConfirmation', true);
             } else {
-                //@formatter:off
+                // @formatter:off
                 $this->context->smarty->assign('worldlineopAjaxTransactionError', $this->module->l('Capture of funds failed with status ', 'AdminWorldlineopAjaxTransactionController') . $captureResponse->getStatus());
-                //@formatter:on
+                // @formatter:on
             }
         }
 
-        $html = $this->module->hookAdminOrderCommon((int) $transaction['idOrder']);
+        $html = $this->module->renderAdminOrderContent((int) $transaction['idOrder']);
 
-        die(json_encode(['result_html' => $html, 'success' => true]));
+        exit(json_encode(['result_html' => $html, 'success' => true]));
     }
 
     /**
@@ -84,21 +84,21 @@ class AdminWorldlineopAjaxTransactionController extends ModuleAdminController
     {
         $transaction = Tools::getValue('transaction');
         if (!$this->access('edit')) {
-            //@formatter:off
+            // @formatter:off
             $this->context->smarty->assign([
                 'worldlineopAjaxTransactionError' => $this->module->l('You do not have permission to refund funds.', 'AdminWorldlineopAjaxTransactionController'),
             ]);
-            //@formatter:on
-            die(json_encode([
-                'result_html' => $this->module->hookAdminOrderCommon((int) $transaction['idOrder']),
+            // @formatter:on
+            exit(json_encode([
+                'result_html' => $this->module->renderAdminOrderContent((int) $transaction['idOrder']),
             ]));
         }
-        /** @var \OnlinePayments\Sdk\Merchant\MerchantClient $merchantClient */
+        /** @var OnlinePayments\Sdk\Merchant\MerchantClient $merchantClient */
         $merchantClient = $this->module->getService('worldlineop.sdk.client');
 
         $refundRequest = new RefundRequest();
         $amountOfMoney = new AmountOfMoney();
-        $amountOfMoney->setAmount(\WorldlineOP\PrestaShop\Utils\Tools::getAmountInCents($transaction['amountToRefund'], $transaction['currencyCode']));
+        $amountOfMoney->setAmount(WorldlineOP\PrestaShop\Utils\Tools::getAmountInCents($transaction['amountToRefund'], $transaction['currencyCode']));
         $amountOfMoney->setCurrencyCode($transaction['currencyCode']);
         $refundRequest->setAmountOfMoney($amountOfMoney);
         try {
@@ -115,15 +115,15 @@ class AdminWorldlineopAjaxTransactionController extends ModuleAdminController
             if (in_array($refundResponse->getStatus(), ['REFUNDED', 'REFUND_REQUESTED'])) {
                 $this->context->smarty->assign('refundConfirmation', true);
             } else {
-                //@formatter:off
+                // @formatter:off
                 $this->context->smarty->assign('worldlineopAjaxTransactionError', $this->module->l('Refund of funds failed with status ', 'AdminWorldlineopAjaxTransactionController') . $refundResponse->getStatus());
-                //@formatter:on
+                // @formatter:on
             }
         }
 
-        $html = $this->module->hookAdminOrderCommon((int) $transaction['idOrder']);
+        $html = $this->module->renderAdminOrderContent((int) $transaction['idOrder']);
 
-        die(json_encode(['result_html' => $html, 'success' => true]));
+        exit(json_encode(['result_html' => $html, 'success' => true]));
     }
 
     /**
@@ -133,17 +133,17 @@ class AdminWorldlineopAjaxTransactionController extends ModuleAdminController
     {
         $transaction = Tools::getValue('transaction');
         if (!$this->access('edit')) {
-            //@formatter:off
+            // @formatter:off
             $this->context->smarty->assign([
                 'worldlineopAjaxTransactionError' => $this->module->l('You do not have permission to cancel transactions.', 'AdminWorldlineopAjaxTransactionController'),
             ]);
-            //@formatter:on
-            die(json_encode([
-                'result_html' => $this->module->hookAdminOrderCommon((int) $transaction['idOrder']),
+            // @formatter:on
+            exit(json_encode([
+                'result_html' => $this->module->renderAdminOrderContent((int) $transaction['idOrder']),
             ]));
         }
 
-        /** @var \OnlinePayments\Sdk\Merchant\MerchantClient $merchantClient */
+        /** @var OnlinePayments\Sdk\Merchant\MerchantClient $merchantClient */
         $merchantClient = $this->module->getService('worldlineop.sdk.client');
 
         try {
@@ -160,8 +160,8 @@ class AdminWorldlineopAjaxTransactionController extends ModuleAdminController
             $this->context->smarty->assign('cancelConfirmation', true);
         }
 
-        $html = $this->module->hookAdminOrderCommon((int) $transaction['idOrder']);
+        $html = $this->module->renderAdminOrderContent((int) $transaction['idOrder']);
 
-        die(json_encode(['result_html' => $html, 'success' => true]));
+        exit(json_encode(['result_html' => $html, 'success' => true]));
     }
 }

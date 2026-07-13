@@ -41,8 +41,8 @@ class SettingsSerializer
         // Define normalization callbacks
         $this->normalizationContext = [
             ObjectNormalizer::CALLBACKS => [
-                'redirectPaymentMethods' => fn($value) => $value ?? [],
-                'iframePaymentMethods' => fn($value) => $value ?? [],
+                'redirectPaymentMethods' => fn ($value) => $value ?? [],
+                'iframePaymentMethods' => fn ($value) => $value ?? [],
             ],
         ];
 
@@ -50,10 +50,10 @@ class SettingsSerializer
         $objectNormalizer = new ObjectNormalizer(null, null, null, new PhpDocExtractor());
 
         // Your custom denormalizers
-        $advancedSettingsDenormalizer = new AdvancedSettingsDenormalizer();
+        $advancedSettingsDenormalizer = new AdvancedSettingsDenormalizer($objectNormalizer);
         $advancedSettingsDenormalizer->setDenormalizer($objectNormalizer);
 
-        $paymentMethodsSettingsDenormalizer = new PaymentMethodsSettingsDenormalizer();
+        $paymentMethodsSettingsDenormalizer = new PaymentMethodsSettingsDenormalizer($objectNormalizer);
         $paymentMethodsSettingsDenormalizer->setDenormalizer($objectNormalizer);
 
         // Custom encoder
@@ -65,7 +65,7 @@ class SettingsSerializer
                 $advancedSettingsDenormalizer,
                 $paymentMethodsSettingsDenormalizer,
                 $objectNormalizer,
-                new ArrayDenormalizer()
+                new ArrayDenormalizer(),
             ],
             [$settingsEncoder]
         );

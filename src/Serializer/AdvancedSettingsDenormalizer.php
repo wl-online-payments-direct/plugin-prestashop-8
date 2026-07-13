@@ -17,6 +17,8 @@ namespace WorldlineOP\PrestaShop\Serializer;
 if (!defined('_PS_VERSION_')) {
     exit;
 }
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -26,9 +28,20 @@ use WorldlineOP\PrestaShop\Configuration\Entity\PaymentSettings;
 /**
  * Class AdvancedSettingsDenormalizer
  */
-class AdvancedSettingsDenormalizer extends ObjectNormalizer
+class AdvancedSettingsDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
+
+    /** @var ObjectNormalizer */
+    private $objectNormalizer;
+
+    /**
+     * @param ObjectNormalizer $objectNormalizer
+     */
+    public function __construct(ObjectNormalizer $objectNormalizer)
+    {
+        $this->objectNormalizer = $objectNormalizer;
+    }
 
     /**
      * Denormalizes data back into an object of the given class.
@@ -50,8 +63,9 @@ class AdvancedSettingsDenormalizer extends ObjectNormalizer
      */
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        $obj = parent::denormalize($data, $type, $format, $context);
-        if (isset($data['paymentSettings'])) {
+        $context[AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT] = true;
+        $obj = $this->objectNormalizer->denormalize($data, $type, $format, $context);
+        if (is_object($obj) && isset($data['paymentSettings'])) {
             $obj->paymentSettings = $this->denormalizer->denormalize(
                 $data['paymentSettings'],
                 PaymentSettings::class,

@@ -20,10 +20,10 @@ if (!defined('_PS_VERSION_')) {
 /**
  * Class ExceptionList
  */
-class ExceptionList extends \Exception
+class ExceptionList extends \Exception implements \IteratorAggregate
 {
     /** @var \Exception[] */
-    private $exceptions;
+    private $exceptions = [];
 
     /**
      * @param \Exception[] $exceptions
@@ -31,6 +31,14 @@ class ExceptionList extends \Exception
     public function setExceptions($exceptions)
     {
         $this->exceptions = $exceptions;
+    }
+
+    /**
+     * @return \ArrayIterator<int, \Exception>
+     */
+    public function getIterator(): \ArrayIterator
+    {
+        return new \ArrayIterator($this->exceptions);
     }
 
     /**

@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.37] - 2026-25-06
+### Added
+- Add showResultPage parameter
+
+## [2.0.36] - 2026-17-06
+### Added
+- Add module dependencies and compatibility with PrestaShop Validator
+
 ## [2.0.35] - 2026-09-06
 ### Fixed
 - Fix product page not loading on Prestashop 8.1-9.0
@@ -24,7 +32,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove CREATED operations from the operations display on the order details page
 ### Changed
 - Correct display of payment method name for split payment transactions
-
 
 ## [2.0.31] - 2026-01-04
 ### Changed

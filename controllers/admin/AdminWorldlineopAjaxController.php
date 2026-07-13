@@ -24,7 +24,7 @@ class AdminWorldlineopAjaxController extends ModuleAdminController
     /** @var Worldlineop */
     public $module;
 
-    /** @var \Monolog\Logger */
+    /** @var Monolog\Logger */
     public $logger;
 
     /**
@@ -35,7 +35,7 @@ class AdminWorldlineopAjaxController extends ModuleAdminController
     public function __construct()
     {
         parent::__construct();
-        /** @var \WorldlineOP\PrestaShop\Logger\LoggerFactory $loggerFactory */
+        /** @var WorldlineOP\PrestaShop\Logger\LoggerFactory $loggerFactory */
         $loggerFactory = $this->module->getService('worldlineop.logger.factory');
         $this->logger = $loggerFactory->setChannel('Ajax');
     }
@@ -43,7 +43,7 @@ class AdminWorldlineopAjaxController extends ModuleAdminController
     public function ajaxProcessToggleAdvSettings()
     {
         Configuration::updateGlobalValue('WORLDLINEOP_SHOW_ADVANCED_SETTINGS', Tools::getValue('newState'));
-        die(json_encode(['errors' => false]));
+        exit(json_encode(['errors' => false]));
     }
 
     /**
@@ -52,7 +52,7 @@ class AdminWorldlineopAjaxController extends ModuleAdminController
     public function ajaxProcessGetPaymentProducts()
     {
         $paymentType = Tools::getValue('type');
-        /** @var \WorldlineOP\PrestaShop\Configuration\Product\GetProductsRequest $productRequest */
+        /** @var WorldlineOP\PrestaShop\Configuration\Product\GetProductsRequest $productRequest */
         $productRequest = $this->module->getService('worldlineop.settings.get_products');
         try {
             $paymentMethods = $productRequest->request($paymentType);
@@ -61,6 +61,8 @@ class AdminWorldlineopAjaxController extends ModuleAdminController
                 'errors' => true,
                 'message' => $e->getMessage(),
             ]));
+
+            return;
         }
 
         $this->context->smarty->assign([
@@ -84,18 +86,18 @@ class AdminWorldlineopAjaxController extends ModuleAdminController
 
     public function ajaxProcessHideWhatsNew()
     {
-        /** @var \WorldlineOP\PrestaShop\Configuration\Updater\AdvancedSettingsUpdater $updater */
+        /** @var WorldlineOP\PrestaShop\Configuration\Updater\AdvancedSettingsUpdater $updater */
         $updater = $this->module->getService('worldlineop.settings.advanced_settings.updater');
         try {
             $updater->update(['displayWhatsNew' => false]);
         } catch (ExceptionList $e) {
-            die(json_encode([
+            exit(json_encode([
                 'errors' => true,
                 'messages' => $e->getExceptionsMessages(),
             ]));
         }
 
-        die(json_encode([
+        exit(json_encode([
             'errors' => false,
         ]));
     }
@@ -106,7 +108,7 @@ class AdminWorldlineopAjaxController extends ModuleAdminController
             $this->module->getLocalPath() . 'views/templates/admin/worldlineop_configuration/modal/_whatsnew.tpl'
         );
 
-        die(json_encode([
+        exit(json_encode([
             'result_html' => $html,
             'errors' => [],
         ]));
@@ -121,7 +123,7 @@ class AdminWorldlineopAjaxController extends ModuleAdminController
             $this->module->getLocalPath() . 'views/templates/admin/worldlineop_configuration/modal/_loading.tpl'
         );
 
-        die(json_encode([
+        exit(json_encode([
             'result_html' => $html,
             'errors' => [],
         ]));

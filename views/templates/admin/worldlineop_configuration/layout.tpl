@@ -87,7 +87,7 @@
   // Multilang field setup must happen before document is ready so that calls to displayFlags() to avoid
   // precedence conflicts with other document.ready() blocks
   {foreach $languages as $k => $language}
-  languages[{$k}] = {
+  languages[{$k|escape:'javascript':'UTF-8'}] = {
     id_lang: {$language.id_lang|escape:'javascript':'UTF-8'},
     iso_code: '{$language.iso_code|escape:'javascript':'UTF-8'}',
     name: '{$language.name|escape:'javascript':'UTF-8'}',

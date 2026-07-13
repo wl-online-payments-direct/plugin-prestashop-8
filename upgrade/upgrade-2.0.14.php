@@ -11,7 +11,6 @@
  * @copyright 2021 Worldline Online Payments
  * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -40,6 +39,7 @@ function upgrade_module_2_0_14($module)
 
     if (!is_array($results)) {
         Shop::setContext($previousShopContext);
+
         return true;
     }
 

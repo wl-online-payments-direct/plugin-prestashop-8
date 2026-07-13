@@ -17,33 +17,12 @@ namespace WorldlineOP\PrestaShop\Repository;
 if (!defined('_PS_VERSION_')) {
     exit;
 }
-use Db;
 
 /**
  * Class TransactionRepository
  */
 class TransactionRepository
 {
-    /** @var Db */
-    private $db;
-
-    /** @var array */
-    private $cache;
-
-    /**
-     * TransactionRepository constructor.
-     *
-     * @param Db $db
-     */
-    public function __construct(?Db $db = null)
-    {
-        if (null === $db) {
-            $this->db = Db::getInstance();
-        } else {
-            $this->db = $db;
-        }
-    }
-
     /**
      * @param int $idOrder
      *

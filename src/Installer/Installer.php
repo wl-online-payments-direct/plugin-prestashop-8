@@ -76,7 +76,7 @@ class Installer
         AdvancedSettingsUpdater $advancedSettingsUpdater,
         PaymentMethodsSettingsUpdater $paymentMethodsSettingsUpdater,
         $psVersion,
-        LoggerFactory $loggerFactory
+        LoggerFactory $loggerFactory,
     ) {
         $this->module = $module;
         $this->tabManager = $tabManager;
@@ -134,13 +134,11 @@ class Installer
      */
     public function checkTechnicalRequirements()
     {
-        //@formatter:off
+        // @formatter:off
         if (extension_loaded('curl') == false) {
-            throw new \Exception(
-                $this->module->l('You need to enable the cURL extension to use this module.', 'Installer')
-            );
+            throw new \Exception($this->module->l('You need to enable the cURL extension to use this module.', 'Installer'));
         }
-        //@formatter:on
+        // @formatter:on
         $this->logger->info('Configuration meets technical requirements');
     }
 

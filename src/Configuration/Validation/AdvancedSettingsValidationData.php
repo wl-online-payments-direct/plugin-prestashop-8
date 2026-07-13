@@ -31,7 +31,7 @@ class AdvancedSettingsValidationData extends AbstractValidationData
      */
     public function getValidationData($array)
     {
-        //@formatter:off
+        // @formatter:off
         $constraints = [
             'testEndpoint' => [
                 new Assert\Url([
@@ -52,7 +52,7 @@ class AdvancedSettingsValidationData extends AbstractValidationData
                 ]),
             ],
         ];
-        //@formatter:on
+        // @formatter:on
 
         $arrayToValidate = array_intersect_key($array, $constraints);
         $validationConstraints = array_intersect_key($constraints, $array);

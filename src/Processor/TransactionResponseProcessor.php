@@ -17,24 +17,19 @@ namespace WorldlineOP\PrestaShop\Processor;
 if (!defined('_PS_VERSION_')) {
     exit;
 }
-use Context;
-use Order;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\FlockStore;
-use Worldlineop;
 use WorldlineOP\PrestaShop\Logger\LoggerFactory;
 use WorldlineOP\PrestaShop\Presenter\TransactionPresented;
 use WorldlineOP\PrestaShop\Repository\TokenRepository;
 use WorldlineOP\PrestaShop\Utils\Tools;
-use WorldlineopToken;
-use WorldlineopTransaction;
 
 /**
  * Class TransactionResponseProcessor
  */
 class TransactionResponseProcessor
 {
-    /** @var Worldlineop */
+    /** @var \Worldlineop */
     private $module;
 
     /** @var \Monolog\Logger */
@@ -43,10 +38,10 @@ class TransactionResponseProcessor
     /**
      * TransactionResponseProcessor constructor.
      *
-     * @param Worldlineop $module
+     * @param \Worldlineop $module
      * @param LoggerFactory $loggerFactory
      */
-    public function __construct(Worldlineop $module, LoggerFactory $loggerFactory)
+    public function __construct(\Worldlineop $module, LoggerFactory $loggerFactory)
     {
         $this->module = $module;
         $this->logger = $loggerFactory->setChannel('TransactionProcessor');
@@ -94,7 +89,7 @@ class TransactionResponseProcessor
                     $this->logger->debug(sprintf('Saving transaction for order %d', $idOrder));
                     /** @var \WorldlineOP\PrestaShop\Repository\TransactionRepository $transactionRepository */
                     $transactionRepository = $this->module->getService('worldlineop.repository.transaction');
-                    $transaction = new WorldlineopTransaction();
+                    $transaction = new \WorldlineopTransaction();
                     $transaction->reference = pSQL($presentedData->transaction['merchantReference']);
                     $transaction->id_order = (int) $idOrder;
                     try {
@@ -114,8 +109,8 @@ class TransactionResponseProcessor
             }
         } elseif ($presentedData->updateStatus) {
             foreach ($presentedData->order['ids'] as $idOrder) {
-                $order = new Order((int) $idOrder);
-                if (!count($order->getHistory(Context::getContext()->language->id, $presentedData->idOrderState))) {
+                $order = new \Order((int) $idOrder);
+                if (!count($order->getHistory($this->module->getContext()->language->id, $presentedData->idOrderState))) {
                     $orderHistory = new \OrderHistory();
                     $orderHistory->id_order = (int) $idOrder;
                     try {
@@ -146,7 +141,7 @@ class TransactionResponseProcessor
                 $presentedData->token['value']
             );
             if (false === $token) {
-                $token = new WorldlineopToken();
+                $token = new \WorldlineopToken();
             }
             $this->logger->debug('Saving token');
             $token->id_customer = (int) $presentedData->cardDetails['idCustomer'];

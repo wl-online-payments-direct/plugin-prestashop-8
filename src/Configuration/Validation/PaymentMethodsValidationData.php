@@ -31,7 +31,7 @@ class PaymentMethodsValidationData extends AbstractValidationData
      */
     public function getValidationData($array)
     {
-        //@formatter:off
+        // @formatter:off
         $constraints = [
             'iframeTemplateFilename' => new Regex([
                 'pattern' => '/^[a-zA-Z0-9_\-\.]+$/i',
@@ -42,7 +42,7 @@ class PaymentMethodsValidationData extends AbstractValidationData
                 'message' => $this->module->l('Please fill a valid redirect template filename', 'PaymentMethodsValidationData'),
             ]),
         ];
-        //@formatter:on
+        // @formatter:on
 
         $arrayToValidate = array_intersect_key($array, $constraints);
         $validationConstraints = array_intersect_key($constraints, $array);

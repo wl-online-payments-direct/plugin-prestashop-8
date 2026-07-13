@@ -17,12 +17,6 @@ namespace WorldlineOP\PrestaShop\Presenter;
 if (!defined('_PS_VERSION_')) {
     exit;
 }
-use Address;
-use Cart;
-use Country;
-use CreatedPayment;
-use Currency;
-use HostedCheckout;
 use OnlinePayments\Sdk\Domain\AmountOfMoney;
 use OnlinePayments\Sdk\Domain\CardPaymentMethodSpecificOutput;
 use OnlinePayments\Sdk\Domain\MobilePaymentMethodSpecificOutput;
@@ -31,9 +25,6 @@ use OnlinePayments\Sdk\Domain\PaymentResponse;
 use OnlinePayments\Sdk\Domain\RedirectPaymentMethodSpecificOutput;
 use OnlinePayments\Sdk\Domain\RefundRequest;
 use OnlinePayments\Sdk\Merchant\Products\GetPaymentProductParams;
-use Order;
-use Validate;
-use Worldlineop;
 use WorldlineOP\PrestaShop\Configuration\Loader\SettingsLoader;
 use WorldlineOP\PrestaShop\Logger\LoggerFactory;
 use WorldlineOP\PrestaShop\Repository\TransactionRepository;
@@ -43,7 +34,7 @@ use WorldlineOP\PrestaShop\Utils\Tools;
 /**
  * Class GetPaymentPresenter
  */
-class GetPaymentPresenter implements PresenterInterface
+class GetPaymentPresenter
 {
     public const PAYMENT_METHODS_TOKEN = ['card', 'redirect'];
     public const PAYMENT_METHOD_CARD = 'card';
@@ -56,7 +47,7 @@ class GetPaymentPresenter implements PresenterInterface
 
     public const MAX_DELAY_BEFORE_REFUND = 7;
 
-    /** @var Worldlineop */
+    /** @var \Worldlineop */
     private $module;
 
     /** @var ClientFactory */
@@ -71,22 +62,22 @@ class GetPaymentPresenter implements PresenterInterface
     /** @var TransactionPresented */
     protected $presentedData;
 
-    /** @var Cart */
+    /** @var \Cart */
     private $cart;
 
     /**
      * GetPaymentPresenter constructor.
      *
-     * @param Worldlineop $module
+     * @param \Worldlineop $module
      * @param ClientFactory $merchantClientFactory
      * @param SettingsLoader $settingsLoader
      * @param LoggerFactory $loggerFactory
      */
     public function __construct(
-        Worldlineop $module,
+        \Worldlineop $module,
         ClientFactory $merchantClientFactory,
         SettingsLoader $settingsLoader,
-        LoggerFactory $loggerFactory
+        LoggerFactory $loggerFactory,
     ) {
         $this->module = $module;
         $this->merchantClientFactory = $merchantClientFactory;
@@ -106,12 +97,12 @@ class GetPaymentPresenter implements PresenterInterface
      * @throws \PrestaShop\Decimal\Exception\DivisionByZeroException
      * @throws \Exception
      */
-    public function present($paymentResponse = false, $idShop = false)
+    public function present($paymentResponse, $idShop)
     {
         $merchantReferenceFull = $paymentResponse->getPaymentOutput()->getReferences()->getMerchantReference();
         $merchantReferenceParts = explode('-', $merchantReferenceFull);
-        $this->cart = new Cart((int) $merchantReferenceParts[0]);
-        if (!Validate::isLoadedObject($this->cart)) {
+        $this->cart = new \Cart((int) $merchantReferenceParts[0]);
+        if (!\Validate::isLoadedObject($this->cart)) {
             $this->logger->error('Cart cannot be loaded', ['merchantReference' => $merchantReferenceFull]);
 
             return $this->presentedData;
@@ -124,8 +115,8 @@ class GetPaymentPresenter implements PresenterInterface
         $idShop = $this->cart->id_shop;
         $settings = $this->settingsLoader->setContext($idShop);
         $this->merchantClientFactory->setSettings($settings);
-        $idOrder = Order::getIdByCartId($this->cart->id);
-        $order = new Order((int) $idOrder);
+        $idOrder = \Order::getIdByCartId($this->cart->id);
+        $order = new \Order((int) $idOrder);
 
         $paymentStatus = $paymentResponse->getStatus();
         if (in_array($paymentStatus, self::STATUS_ACCEPTED)) {
@@ -143,7 +134,7 @@ class GetPaymentPresenter implements PresenterInterface
         }
 
         $totalReceived = $paymentResponse->getPaymentOutput()->getAmountOfMoney()->getAmount();
-        $totalPrestaShop = Tools::getRoundedAmountInCents($this->cart->getOrderTotal(true, Cart::BOTH, null, null, false, true), $paymentResponse->getPaymentOutput()->getAmountOfMoney()->getCurrencyCode());
+        $totalPrestaShop = Tools::getRoundedAmountInCents($this->cart->getOrderTotal(true, \Cart::BOTH, null, null, false, true), $paymentResponse->getPaymentOutput()->getAmountOfMoney()->getCurrencyCode());
         $amountsNotMatching = false;
 
         if ($totalPrestaShop != $totalReceived) {
@@ -151,7 +142,7 @@ class GetPaymentPresenter implements PresenterInterface
             $amountsNotMatching = true;
         }
 
-        if (Validate::isLoadedObject($order)) {
+        if (\Validate::isLoadedObject($order)) {
             $this->logger->debug('Order already exists', ['id_order' => $order->id]);
             $this->presentExistingOrder($order, $idOrderState, $paymentResponse, $amountsNotMatching);
         } else {
@@ -186,7 +177,7 @@ class GetPaymentPresenter implements PresenterInterface
     {
         $merchantClient = $this->merchantClientFactory->getMerchant();
         $paymentOutput = $paymentResponse->getPaymentOutput();
-        $order = new Order();
+        $order = new \Order();
         $merchantReference = $paymentOutput->getReferences()->getMerchantReference();
         $currencyCode = $paymentOutput->getAmountOfMoney()->getCurrencyCode();
         $paymentSpecificOutput = $this->getPaymentSpecificOutput($paymentOutput->getPaymentMethod(), $paymentOutput);
@@ -211,7 +202,7 @@ class GetPaymentPresenter implements PresenterInterface
         $paymentProductParams = new GetPaymentProductParams();
         $paymentProductParams->setCurrencyCode($currencyCode);
         $paymentProductParams->setCountryCode(
-            Country::getIsoById((new Address($this->cart->id_address_invoice))->id_country)
+            \Country::getIsoById((new \Address($this->cart->id_address_invoice))->id_country)
         );
         $paymentMethodText = $this->module->l('Worldline Online Payments', 'GetPaymentPresenter');
         try {
@@ -226,9 +217,9 @@ class GetPaymentPresenter implements PresenterInterface
         /** @var \WorldlineOP\PrestaShop\Repository\CreatedPaymentRepository $createdPaymentRepository */
         $createdPaymentRepository = $this->module->getService('worldlineop.repository.created_payment');
 
-        /** @var HostedCheckout $hostedCheckout */
+        /** @var \HostedCheckout|false $hostedCheckout */
         $hostedCheckout = $hostedCheckoutRepository->findByMerchantReference($merchantReference);
-        /** @var CreatedPayment $createdPayment */
+        /** @var \CreatedPayment|false $createdPayment */
         $createdPayment = $createdPaymentRepository->findByMerchantReference($merchantReference);
 
         if (!$hostedCheckout && !$createdPayment) {
@@ -240,13 +231,9 @@ class GetPaymentPresenter implements PresenterInterface
             $this->logger->debug('Payment has been made through Hosted Checkout Page');
             $this->logger->debug('Checkout Session found');
             $token = $this->getTokenData($paymentOutput, $paymentSpecificOutput);
-        } elseif ($createdPayment) {
+        } else {
             $this->logger->debug('Payment has been made through Tokenization Page');
             $this->logger->debug('CreatedPayment found');
-        } else {
-            $this->logger->debug('Could not find hosted or htp', ['merchantReference' => $merchantReference]);
-
-            return;
         }
         $transactionId = strstr($paymentResponse->getId(), '_', true);
         if (false === $transactionId) {
@@ -262,7 +249,7 @@ class GetPaymentPresenter implements PresenterInterface
         $this->presentedData->transaction['productId'] = $productId;
         $this->presentedData->transaction['paymentMethod'] = $paymentMethodText;
         $this->presentedData->transaction['details']['transaction_id'] = $transactionId;
-        $this->presentedData->transaction['idCurrency'] = Currency::getIdByIsoCode($currencyCode);
+        $this->presentedData->transaction['idCurrency'] = \Currency::getIdByIsoCode($currencyCode);
         $this->presentedData->transaction['merchantReference'] = $paymentResponse->getId();
         $this->presentedData->order['ids'] = Tools::getOrderIdsByIdCart($order->id_cart);
         $this->presentedData->idOrderState = $idOrderState;
@@ -270,7 +257,7 @@ class GetPaymentPresenter implements PresenterInterface
     }
 
     /**
-     * @param Order $order
+     * @param \Order $order
      * @param int $idOrderState
      * @param PaymentResponse $paymentResponse
      * @param bool $amountsNotMatching
@@ -286,8 +273,13 @@ class GetPaymentPresenter implements PresenterInterface
         $merchantClient = $this->merchantClientFactory->getMerchant();
         /** @var TransactionRepository $transactionRepository */
         $transactionRepository = $this->module->getService('worldlineop.repository.transaction');
-        /** @var \WorldlineopTransaction $transaction */
+        /** @var \WorldlineopTransaction|false $transaction */
         $transaction = $transactionRepository->findByIdOrder($order->id);
+        if (false === $transaction) {
+            $this->logger->error('Cannot find transaction for order ' . $order->id);
+
+            return;
+        }
         $merchantReference = strstr($paymentResponse->getId(), '_', true);
         if (false === $merchantReference) {
             $merchantReference = $paymentResponse->getId();
@@ -295,7 +287,7 @@ class GetPaymentPresenter implements PresenterInterface
         $idShop = $this->cart->id_shop;
 
         // Initialize context for proper tax calculation (especially important for webhooks)
-        $context = \Context::getContext();
+        $context = $this->module->getContext();
         if (!isset($context->cart) || $context->cart->id != $this->cart->id) {
             $context->cart = $this->cart;
             $context->currency = new \Currency($this->cart->id_currency);
@@ -318,7 +310,7 @@ class GetPaymentPresenter implements PresenterInterface
         if (false === $transactionReference) {
             $transactionReference = $transaction->reference;
         }
-        if (false === $transaction || ($transactionReference !== $merchantReference && false !== $merchantReference)) {
+        if ($transactionReference !== $merchantReference && false !== $merchantReference) {
             $this->logger->error('Cannot find transaction for order ' . $order->id);
 
             return;
@@ -333,7 +325,7 @@ class GetPaymentPresenter implements PresenterInterface
         }
 
         if (\Configuration::getGlobalValue('PS_OS_CANCELED') == $order->current_state) {
-            $cancelState = $order->getHistory(null, $order->current_state);
+            $cancelState = $order->getHistory((int) $this->module->getContext()->language->id, $order->current_state);
             $cancelledDate = $cancelState[0]['date_add'];
             $now = date('Y-m-d H:i:s');
             $datetime1 = new \DateTime($cancelledDate);
@@ -366,12 +358,12 @@ class GetPaymentPresenter implements PresenterInterface
             $idOrderState = $order->getCurrentState();
         }
 
-        if (!count($order->getHistory($this->cart->id_lang, $idOrderState)) &&
-            !in_array($paymentResponse->getStatus(), self::STATUS_PENDING)
+        if (!count($order->getHistory($this->cart->id_lang, $idOrderState))
+            && !in_array($paymentResponse->getStatus(), self::STATUS_PENDING)
         ) {
             /** @var TransactionRepository $transactionRepository */
             $transactionRepository = $this->module->getService('worldlineop.repository.transaction');
-            /** @var \WorldlineopTransaction $transaction */
+            /** @var \WorldlineopTransaction|false $transaction */
             $transaction = $transactionRepository->findByIdOrder($order->id);
 
             if (false === $transaction) {
@@ -455,9 +447,9 @@ class GetPaymentPresenter implements PresenterInterface
                         ['message' => $e->getMessage(), 'tokenValue' => $paymentSpecificOutput->getToken()]
                     );
                 }
-                if (isset($tokenResponse) &&
-                    $tokenResponse->getId() &&
-                    false === $tokenResponse->getIsTemporary()
+                if (isset($tokenResponse)
+                    && $tokenResponse->getId()
+                    && false === $tokenResponse->getIsTemporary()
                 ) {
                     $this->logger->debug('Token is not temporary. Need save.');
                     $token = [
@@ -478,9 +470,11 @@ class GetPaymentPresenter implements PresenterInterface
 
     /**
      * @param $paymentDetails
+     *
      * @return float|string
+     *
      * @throws \PrestaShop\Decimal\Exception\DivisionByZeroException
- */
+     */
     public function getCapturableAmount($paymentDetails)
     {
         if (!$paymentDetails) {

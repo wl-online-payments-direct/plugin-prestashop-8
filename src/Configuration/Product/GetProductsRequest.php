@@ -17,9 +17,6 @@ namespace WorldlineOP\PrestaShop\Configuration\Product;
 if (!defined('_PS_VERSION_')) {
     exit;
 }
-use Configuration;
-use Country;
-use Currency;
 use OnlinePayments\Sdk\Domain\GetPaymentProductsResponse;
 use OnlinePayments\Sdk\Merchant\MerchantClient;
 use OnlinePayments\Sdk\Merchant\Products\GetPaymentProductsParams;
@@ -60,9 +57,9 @@ class GetProductsRequest
     public function request($paymentType)
     {
         $query = new GetPaymentProductsParams();
-        $defaultCurrency = Currency::getDefaultCurrency();
-        $query->setCurrencyCode($defaultCurrency instanceof Currency ? $defaultCurrency->iso_code : 'EUR');
-        $query->setCountryCode(Country::getIsoById((int) Configuration::get('PS_COUNTRY_DEFAULT')));
+        $defaultCurrency = \Currency::getDefaultCurrency();
+        $query->setCurrencyCode($defaultCurrency instanceof \Currency ? $defaultCurrency->iso_code : 'EUR');
+        $query->setCountryCode(\Country::getIsoById((int) \Configuration::get('PS_COUNTRY_DEFAULT')));
         if ('iframe' === $paymentType) {
             $query->setIsRecurring(true);
             $query->setHide(['productsWithRedirects ']);

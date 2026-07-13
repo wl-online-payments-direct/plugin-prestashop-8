@@ -29,7 +29,6 @@ use OnlinePayments\Sdk\Domain\RefundMobileMethodSpecificOutput;
 use OnlinePayments\Sdk\Domain\RefundOutput;
 use OnlinePayments\Sdk\Domain\RefundRedirectMethodSpecificOutput;
 use OnlinePayments\Sdk\Merchant\MerchantClient;
-use Worldlineop;
 use WorldlineOP\PrestaShop\Repository\TransactionRepository;
 use WorldlineOP\PrestaShop\Utils\Tools;
 
@@ -39,14 +38,16 @@ use WorldlineOP\PrestaShop\Utils\Tools;
 class TransactionPresenter implements PresenterInterface
 {
     public const STATUS_PAYMENT_CREATED = 'CREATED';
-    public const STATUS_REFUND_REQUESTED = 'REFUND_REQUESTED';
-    public const STATUS_CAPTURE_REQUESTED = 'CAPTURE_REQUESTED';
-    public const STATUS_PAYMENT_CAPTURED = 'CAPTURED';
-    public const STATUS_PAYMENT_REFUNDED = 'REFUNDED';
-    public const STATUS_PAYMENT_REJECTED = 'REJECTED';
 
-    /** @var Worldlineop */
-    private $module;
+    public const STATUS_REFUND_REQUESTED = 'REFUND_REQUESTED';
+
+    public const STATUS_CAPTURE_REQUESTED = 'CAPTURE_REQUESTED';
+
+    public const STATUS_PAYMENT_CAPTURED = 'CAPTURED';
+
+    public const STATUS_PAYMENT_REFUNDED = 'REFUNDED';
+
+    public const STATUS_PAYMENT_REJECTED = 'REJECTED';
 
     /** @var TransactionRepository */
     private $transactionRepository;
@@ -55,11 +56,9 @@ class TransactionPresenter implements PresenterInterface
     private $merchantClient;
 
     public function __construct(
-        Worldlineop $module,
         TransactionRepository $transactionRepository,
-        MerchantClient $merchantClient
+        MerchantClient $merchantClient,
     ) {
-        $this->module = $module;
         $this->transactionRepository = $transactionRepository;
         $this->merchantClient = $merchantClient;
     }
@@ -74,12 +73,12 @@ class TransactionPresenter implements PresenterInterface
      */
     public function present($idOrder = false)
     {
-        /** @var \WorldlineopTransaction $transaction */
+        /** @var \WorldlineopTransaction|false $transaction */
         $transaction = $this->transactionRepository->findByIdOrder($idOrder);
         if (false === $transaction) {
             throw new \Exception('Cannot find Worldline transaction');
         }
-        $transactionData = array();
+        $transactionData = [];
 
         try {
             $paymentDetails = $this->merchantClient->payments()->getPaymentDetails($transaction->reference);
@@ -87,165 +86,182 @@ class TransactionPresenter implements PresenterInterface
             throw new \Exception('Could not retrieve transaction details');
         }
 
-        if ($paymentDetails) {
-            foreach ($paymentDetails->getOperations() as $paymentDetail) {
-                if (!in_array($paymentDetail->getStatus(), array(
-                    self::STATUS_PAYMENT_CREATED,
-                    self::STATUS_PAYMENT_REFUNDED,
-                    self::STATUS_REFUND_REQUESTED,
-                    self::STATUS_PAYMENT_REJECTED
-                ))) {
-                    try {
-                        $payment = $this->merchantClient->payments()->getPayment($paymentDetail->getId());
-                    } catch (\Exception $e) {
-                        $payment = $paymentDetails;
-                    }
+        foreach ($paymentDetails->getOperations() as $paymentDetail) {
+            if (!in_array($paymentDetail->getStatus(), [
+                self::STATUS_PAYMENT_CREATED,
+                self::STATUS_PAYMENT_REFUNDED,
+                self::STATUS_REFUND_REQUESTED,
+                self::STATUS_PAYMENT_REJECTED,
+            ])) {
+                try {
+                    $payment = $this->merchantClient->payments()->getPayment($paymentDetail->getId());
+                } catch (\Exception $e) {
+                    $payment = $paymentDetails;
+                }
 
-                    try {
-                        $refunds = $this->merchantClient->refunds()->getRefunds($paymentDetail->getId());
-                        $captures = $this->merchantClient->captures()->getCaptures($paymentDetail->getId());
-                        $paymentSpecificOutput = $this->getPaymentSpecificOutput(
-                            $payment->getPaymentOutput()->getPaymentMethod(),
-                            $payment->getPaymentOutput()
-                        );
-                    } catch (\Exception $e) {
-                        throw new \Exception('Could not retrieve transaction details');
-                    }
+                try {
+                    $refunds = $this->merchantClient->refunds()->getRefunds($paymentDetail->getId());
+                    $captures = $this->merchantClient->captures()->getCaptures($paymentDetail->getId());
+                    $paymentSpecificOutput = $this->getPaymentSpecificOutput(
+                        $payment->getPaymentOutput()->getPaymentMethod(),
+                        $payment->getPaymentOutput()
+                    );
+                } catch (\Exception $e) {
+                    throw new \Exception('Could not retrieve transaction details');
+                }
 
-                    $currencyCode = $payment->getPaymentOutput()->getAmountOfMoney()->getCurrencyCode();
-                    $decimals = Tools::getCurrencyDecimalByIso($currencyCode);
-                    $capturesData = [];
-                    $totalCaptured = 0;
-                    $totalPendingCapture = 0;
-                    if (!empty($captures->getCaptures())) {
-                        foreach ($captures->getCaptures() as $capture) {
-                            if (self::STATUS_CAPTURE_REQUESTED === $capture->getStatus()) {
-                                $totalPendingCapture += $capture->getCaptureOutput()->getAmountOfMoney()->getAmount();
-                            }
-                            if (self::STATUS_PAYMENT_CAPTURED === $capture->getStatus()) {
-                                $totalCaptured += $capture->getCaptureOutput()->getAmountOfMoney()->getAmount();
-                            }
-                            $capturesData[] = [
-                                'amount' => $capture->getCaptureOutput()->getAmountOfMoney()->getAmount(),
-                                'currencyCode' => $capture->getCaptureOutput()->getAmountOfMoney()->getCurrencyCode(),
-                            ];
+                $currencyCode = $payment->getPaymentOutput()->getAmountOfMoney()->getCurrencyCode();
+                $decimals = Tools::getCurrencyDecimalByIso($currencyCode);
+                $capturesData = [];
+                $totalCaptured = 0;
+                $totalPendingCapture = 0;
+                if (!empty($captures->getCaptures())) {
+                    foreach ($captures->getCaptures() as $capture) {
+                        if (self::STATUS_CAPTURE_REQUESTED === $capture->getStatus()) {
+                            $totalPendingCapture += $capture->getCaptureOutput()->getAmountOfMoney()->getAmount();
                         }
-                    } elseif (empty($captures->getCaptures()) && !$payment->getStatusOutput()->getIsAuthorized() && self::STATUS_PAYMENT_CAPTURED === $payment->getStatus()) {
-                        $totalCaptured = $payment->getPaymentOutput()->getAcquiredAmount()->getAmount();
-                    }
-                    $capturableAmount = !$paymentDetails->getStatusOutput()->getIsAuthorized() ? 0 : Tools::getRoundedAmountFromCents($payment->getPaymentOutput()->getAmountOfMoney()->getAmount() - $totalCaptured - $totalPendingCapture, $currencyCode);
-                    if ($capturableAmount < 0) {
-                        $capturableAmount = 0;
-                    }
-
-                    $refundsData = [];
-                    $totalRefunded = 0;
-                    $totalPendingRefund = 0;
-                    if (!empty($refunds->getRefunds())) {
-                        foreach ($refunds->getRefunds() as $refund) {
-                            $refundSpecificOuput = $this->getRefundSpecificOutput(
-                                $refund->getRefundOutput()->getPaymentMethod(),
-                                $refund->getRefundOutput()
-                            );
-                            if (null !== $refundSpecificOuput) {
-                                $totalRefunded += $refundSpecificOuput->getTotalAmountRefunded();
-                            }
-                            if (self::STATUS_REFUND_REQUESTED === $refund->getStatus()) {
-                                $totalPendingRefund += $refund->getRefundOutput()->getAmountOfMoney()->getAmount();
-                            }
-                            $refundsData[] = [
-                                'amount' => $refund->getRefundOutput()->getAmountOfMoney()->getAmount(),
-                                'currencyCode' => $refund->getRefundOutput()->getAmountOfMoney()->getCurrencyCode(),
-                                'id' => $refund->getId(),
-                                'status' => $refund->getStatus(),
-                            ];
+                        if (self::STATUS_PAYMENT_CAPTURED === $capture->getStatus()) {
+                            $totalCaptured += $capture->getCaptureOutput()->getAmountOfMoney()->getAmount();
                         }
-                    }
-                    $refundableAmount = !$paymentDetails->getStatusOutput()->getIsRefundable() ? 0 : Tools::getRoundedAmountFromCents($totalCaptured - $totalRefunded - $totalPendingRefund, $currencyCode);
-                    $apiErrors = $paymentDetails->getStatusOutput()->getErrors() ?: [];
-                    $errors = [];
-                    foreach ($apiErrors as $apiError) {
-                        $errors[] = [
-                            'id' => $apiError->getId(),
-                            'code' => $apiError->getCode(),
+                        $capturesData[] = [
+                            'amount' => $capture->getCaptureOutput()->getAmountOfMoney()->getAmount(),
+                            'currencyCode' => $capture->getCaptureOutput()->getAmountOfMoney()->getCurrencyCode(),
                         ];
                     }
+                } elseif (empty($captures->getCaptures()) && !$payment->getStatusOutput()->getIsAuthorized(
+                ) && self::STATUS_PAYMENT_CAPTURED === $payment->getStatus()) {
+                    $totalCaptured = $payment->getPaymentOutput()->getAcquiredAmount()->getAmount();
+                }
+                $capturableAmount = !$paymentDetails->getStatusOutput()->getIsAuthorized(
+                ) ? 0 : Tools::getRoundedAmountFromCents(
+                    $payment->getPaymentOutput()->getAmountOfMoney()->getAmount() - $totalCaptured - $totalPendingCapture,
+                    $currencyCode
+                );
+                if ($capturableAmount < 0) {
+                    $capturableAmount = 0;
+                }
 
-                    $liability = '';
-                    $exemptionType = '';
-                    $paymentOutput = $paymentDetails->getPaymentOutput();
-
-                    $specificOutput = null;
-                    if (null !== $paymentOutput) {
-                        $specificOutput = $paymentOutput->getCardPaymentMethodSpecificOutput();
-                    }
-
-                    $threeDSecureResults = null;
-                    if (null !== $specificOutput) {
-                        $threeDSecureResults = $specificOutput->getThreeDSecureResults();
-                    }
-
-                    if (null !== $threeDSecureResults) {
-                        $liability = $threeDSecureResults->getLiability();
-                        $exemptionType = $threeDSecureResults->getAppliedExemption();
-                    }
-
-                    $order = new \Order((int)$idOrder);
-                    $psOrderAmountMatch = true;
-                    if ($order->total_paid_tax_incl) {
-                        $worldlineAmount = (int)$payment->getPaymentOutput()->getAmountOfMoney()->getAmount();
-                        $psAmount = (int)Tools::getRoundedAmountInCents($order->total_paid_tax_incl, $payment->getPaymentOutput()->getAmountOfMoney()->getCurrencyCode());
-                        $psOrderAmountMatch = ($worldlineAmount === $psAmount);
-                    }
-
-                    $surcharge = $payment->getPaymentOutput()->getSurchargeSpecificOutput();
-                    $surchargeAmount = 0;
-                    if (null !== $surcharge) {
-                        $surchargeAmount = Tools::getRoundedAmountFromCents(
-                            $payment->getPaymentOutput()->getSurchargeSpecificOutput()->getSurchargeAmount()->getAmount(),
-                            $payment->getPaymentOutput()->getSurchargeSpecificOutput()->getSurchargeAmount()->getCurrencyCode()
+                $refundsData = [];
+                $totalRefunded = 0;
+                $totalPendingRefund = 0;
+                if (!empty($refunds->getRefunds())) {
+                    foreach ($refunds->getRefunds() as $refund) {
+                        $refundSpecificOuput = $this->getRefundSpecificOutput(
+                            $refund->getRefundOutput()->getPaymentMethod(),
+                            $refund->getRefundOutput()
                         );
+                        if (null !== $refundSpecificOuput) {
+                            $totalRefunded += $refundSpecificOuput->getTotalAmountRefunded();
+                        }
+                        if (self::STATUS_REFUND_REQUESTED === $refund->getStatus()) {
+                            $totalPendingRefund += $refund->getRefundOutput()->getAmountOfMoney()->getAmount();
+                        }
+                        $refundsData[] = [
+                            'amount' => $refund->getRefundOutput()->getAmountOfMoney()->getAmount(),
+                            'currencyCode' => $refund->getRefundOutput()->getAmountOfMoney()->getCurrencyCode(),
+                            'id' => $refund->getId(),
+                            'status' => $refund->getStatus(),
+                        ];
                     }
-                    $transactionData[] = [
-                        'orderId' => $idOrder,
-                        'payment' => [
-                            'amount' => Tools::getRoundedAmountFromCents(
-                                $paymentDetail->getAmountOfMoney()->getAmount(), $currencyCode),
-                            'hasSurcharge' => !($surchargeAmount === 0),
-                            'surchargeAmount' => $surchargeAmount,
-                            'amountWithoutSurcharge' => Tools::getRoundedAmountFromCents(
-                                $payment->getPaymentOutput()->getAmountOfMoney()->getAmount(), $currencyCode),
-                            'psOrderAmountMatch' => $psOrderAmountMatch,
-                            'currencyCode' => $currencyCode,
-                            'reference' => $payment->getPaymentOutput()->getReferences()->getMerchantReference(),
-                            'id' => $paymentDetail->getId(),
-                            'status' => $paymentDetail->getStatus(),
-                            'productId' => $paymentSpecificOutput->getPaymentProductId(),
-                            'fraudResult' => !empty($paymentSpecificOutput->getFraudResults()) ?
-                                $paymentSpecificOutput->getFraudResults()->getFraudServiceResult() : '',
-                            'liability' => $liability,
-                            'exemptionType' => $exemptionType,
-                            'errors' => $errors,
-                        ],
-                        'actions' => [
-                            'isAuthorized' => $paymentDetails->getStatusOutput()->getIsAuthorized(),
-                            'isCancellable' => $paymentDetails->getStatusOutput()->getIsCancellable(),
-                            'isRefundable' => $paymentDetails->getStatusOutput()->getIsRefundable(),
-                        ],
-                        'refunds' => [
-                            'list' => $refundsData,
-                            'refundableAmount' => number_format($refundableAmount, $decimals, '.', ''),
-                            'totalPendingRefund' => Tools::getRoundedAmountFromCents($totalPendingRefund, $currencyCode),
-                            'totalRefunded' => Tools::getRoundedAmountFromCents($totalRefunded, $currencyCode),
-                        ],
-                        'captures' => [
-                            'list' => $capturesData,
-                            'capturableAmount' => number_format($capturableAmount, $decimals, '.', ''),
-                            'totalPendingCapture' => Tools::getRoundedAmountFromCents($totalPendingCapture, $currencyCode),
-                            'totalCaptured' => Tools::getRoundedAmountFromCents($totalCaptured, $currencyCode),
-                        ],
+                }
+                $refundableAmount = !$paymentDetails->getStatusOutput()->getIsRefundable(
+                ) ? 0 : Tools::getRoundedAmountFromCents(
+                    $totalCaptured - $totalRefunded - $totalPendingRefund,
+                    $currencyCode
+                );
+                $apiErrors = $paymentDetails->getStatusOutput()->getErrors() ?: [];
+                $errors = [];
+                foreach ($apiErrors as $apiError) {
+                    $errors[] = [
+                        'id' => $apiError->getId(),
+                        'code' => $apiError->getCode(),
                     ];
                 }
+
+                $liability = '';
+                $exemptionType = '';
+                $paymentOutput = $paymentDetails->getPaymentOutput();
+
+                $specificOutput = null;
+                if (null !== $paymentOutput) {
+                    $specificOutput = $paymentOutput->getCardPaymentMethodSpecificOutput();
+                }
+
+                $threeDSecureResults = null;
+                if (null !== $specificOutput) {
+                    $threeDSecureResults = $specificOutput->getThreeDSecureResults();
+                }
+
+                if (null !== $threeDSecureResults) {
+                    $liability = $threeDSecureResults->getLiability();
+                    $exemptionType = $threeDSecureResults->getAppliedExemption();
+                }
+
+                $order = new \Order((int) $idOrder);
+                $psOrderAmountMatch = true;
+                if ($order->total_paid_tax_incl) {
+                    $worldlineAmount = (int) $payment->getPaymentOutput()->getAmountOfMoney()->getAmount();
+                    $psAmount = (int) Tools::getRoundedAmountInCents(
+                        $order->total_paid_tax_incl,
+                        $payment->getPaymentOutput()->getAmountOfMoney()->getCurrencyCode()
+                    );
+                    $psOrderAmountMatch = ($worldlineAmount === $psAmount);
+                }
+
+                /** @var \OnlinePayments\Sdk\Domain\FraudResults|null $fraudResults */
+                $fraudResults = $paymentSpecificOutput->getFraudResults();
+                $surcharge = $payment->getPaymentOutput()->getSurchargeSpecificOutput();
+                $surchargeAmount = 0;
+                if (null !== $surcharge) {
+                    $surchargeAmount = Tools::getRoundedAmountFromCents(
+                        $payment->getPaymentOutput()->getSurchargeSpecificOutput()->getSurchargeAmount()->getAmount(),
+                        $payment->getPaymentOutput()->getSurchargeSpecificOutput()->getSurchargeAmount()->getCurrencyCode(
+                        )
+                    );
+                }
+                $transactionData[] = [
+                    'orderId' => $idOrder,
+                    'payment' => [
+                        'amount' => Tools::getRoundedAmountFromCents(
+                            $paymentDetail->getAmountOfMoney()->getAmount(),
+                            $currencyCode
+                        ),
+                        'hasSurcharge' => (float) $surchargeAmount !== 0.0,
+                        'surchargeAmount' => $surchargeAmount,
+                        'amountWithoutSurcharge' => Tools::getRoundedAmountFromCents(
+                            $payment->getPaymentOutput()->getAmountOfMoney()->getAmount(),
+                            $currencyCode
+                        ),
+                        'psOrderAmountMatch' => $psOrderAmountMatch,
+                        'currencyCode' => $currencyCode,
+                        'reference' => $payment->getPaymentOutput()->getReferences()->getMerchantReference(),
+                        'id' => $paymentDetail->getId(),
+                        'status' => $paymentDetail->getStatus(),
+                        'productId' => $paymentSpecificOutput->getPaymentProductId(),
+                        'fraudResult' => !empty($fraudResults) ?
+                          $fraudResults->getFraudServiceResult() : '',
+                        'liability' => $liability,
+                        'exemptionType' => $exemptionType,
+                        'errors' => $errors,
+                    ],
+                    'actions' => [
+                        'isAuthorized' => $paymentDetails->getStatusOutput()->getIsAuthorized(),
+                        'isCancellable' => $paymentDetails->getStatusOutput()->getIsCancellable(),
+                        'isRefundable' => $paymentDetails->getStatusOutput()->getIsRefundable(),
+                    ],
+                    'refunds' => [
+                        'list' => $refundsData,
+                        'refundableAmount' => number_format($refundableAmount, $decimals, '.', ''),
+                        'totalPendingRefund' => Tools::getRoundedAmountFromCents($totalPendingRefund, $currencyCode),
+                        'totalRefunded' => Tools::getRoundedAmountFromCents($totalRefunded, $currencyCode),
+                    ],
+                    'captures' => [
+                        'list' => $capturesData,
+                        'capturableAmount' => number_format($capturableAmount, $decimals, '.', ''),
+                        'totalPendingCapture' => Tools::getRoundedAmountFromCents($totalPendingCapture, $currencyCode),
+                        'totalCaptured' => Tools::getRoundedAmountFromCents($totalCaptured, $currencyCode),
+                    ],
+                ];
             }
         }
 

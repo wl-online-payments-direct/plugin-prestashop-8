@@ -69,5 +69,8 @@ class AdvancedSettings
     public $surchargingEnabled;
 
     /** @var bool */
+    public $displayPaymentConfirmationPage;
+
+    /** @var bool */
     public $displayWhatsNew;
 }

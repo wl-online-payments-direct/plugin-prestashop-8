@@ -27,7 +27,7 @@ class WorldlineopWebhookModuleFrontController extends ModuleFrontController
     /** @var Worldlineop */
     public $module;
 
-    /** @var \Monolog\Logger */
+    /** @var Monolog\Logger */
     public $logger;
 
     /**
@@ -35,7 +35,7 @@ class WorldlineopWebhookModuleFrontController extends ModuleFrontController
      */
     public function postProcess()
     {
-        /** @var \WorldlineOP\PrestaShop\Logger\LoggerFactory $loggerFactory */
+        /** @var WorldlineOP\PrestaShop\Logger\LoggerFactory $loggerFactory */
         $loggerFactory = $this->module->getService('worldlineop.logger.factory');
         $this->logger = $loggerFactory->setChannel('Webhooks');
         $data = \Tools::file_get_contents('php://input');
@@ -84,7 +84,7 @@ class WorldlineopWebhookModuleFrontController extends ModuleFrontController
         }
 
         if ($cartId) {
-            $cart = new Cart($cartId);
+            $cart = new Cart((int) $cartId);
             if (Validate::isLoadedObject($cart)) {
                 // Initialize complete context for correct tax calculation
                 $currency = new Currency($cart->id_currency);
@@ -109,12 +109,12 @@ class WorldlineopWebhookModuleFrontController extends ModuleFrontController
             }
         }
 
-        /** @var \WorldlineOP\PrestaShop\Presenter\WebhookEventPresenter $eventPresenter */
+        /** @var WorldlineOP\PrestaShop\Presenter\WebhookEventPresenter $eventPresenter */
         $eventPresenter = $this->module->getService('worldlineop.event.presenter');
         try {
             $eventPresenter->handlePending($event, $settings);
             $presentedData = $eventPresenter->present($event, $this->context->shop->id);
-            /** @var \WorldlineOP\PrestaShop\Processor\TransactionResponseProcessor $transactionResponseProcessor */
+            /** @var WorldlineOP\PrestaShop\Processor\TransactionResponseProcessor $transactionResponseProcessor */
             $transactionResponseProcessor = $this->module->getService('worldlineop.processor.transaction');
             $transactionResponseProcessor->process($presentedData);
         } catch (Exception $e) {

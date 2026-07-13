@@ -48,6 +48,7 @@ class ComposerStaticInit3c653371edbd38b64b95e3a48776d76f
         'P' =>
             array (
                 'Psr\\Log\\' => 8,
+                'Prestashop\\ModuleLibMboInstaller\\' => 33,
                 'PrestaShop\\ModuleLibServiceContainer\\' => 37,
                 'PrestaShop\\ModuleLibCacheDirectoryProvider\\' => 43,
                 'PrestaShop\\Decimal\\' => 19,
@@ -153,6 +154,10 @@ class ComposerStaticInit3c653371edbd38b64b95e3a48776d76f
         'Psr\\Log\\' =>
             array (
                 0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+            ),
+        'Prestashop\\ModuleLibMboInstaller\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/prestashop/module-lib-mbo-installer/src',
             ),
         'PrestaShop\\ModuleLibServiceContainer\\' =>
             array (
@@ -742,6 +747,11 @@ class ComposerStaticInit3c653371edbd38b64b95e3a48776d76f
         'PrestaShop\\ModuleLibCacheDirectoryProvider\\Cache\\CacheDirectoryProvider' => __DIR__ . '/..' . '/prestashop/module-lib-cache-directory-provider/src/Cache/CacheDirectoryProvider.php',
         'PrestaShop\\ModuleLibServiceContainer\\DependencyInjection\\ContainerProvider' => __DIR__ . '/..' . '/prestashop/module-lib-service-container/src/DependencyInjection/ContainerProvider.php',
         'PrestaShop\\ModuleLibServiceContainer\\DependencyInjection\\ServiceContainer' => __DIR__ . '/..' . '/prestashop/module-lib-service-container/src/DependencyInjection/ServiceContainer.php',
+        'Prestashop\\ModuleLibMboInstaller\\DependencyBuilder' => __DIR__ . '/..' . '/prestashop/module-lib-mbo-installer/src/DependencyBuilder.php',
+        'Prestashop\\ModuleLibMboInstaller\\HttpClient' => __DIR__ . '/..' . '/prestashop/module-lib-mbo-installer/src/HttpClient.php',
+        'Prestashop\\ModuleLibMboInstaller\\Installer' => __DIR__ . '/..' . '/prestashop/module-lib-mbo-installer/src/Installer.php',
+        'Prestashop\\ModuleLibMboInstaller\\Presenter' => __DIR__ . '/..' . '/prestashop/module-lib-mbo-installer/src/Presenter.php',
+        'Prestashop\\ModuleLibMboInstaller\\Response' => __DIR__ . '/..' . '/prestashop/module-lib-mbo-installer/src/Response.php',
         'Psr\\Log\\AbstractLogger' => __DIR__ . '/..' . '/psr/log/Psr/Log/AbstractLogger.php',
         'Psr\\Log\\InvalidArgumentException' => __DIR__ . '/..' . '/psr/log/Psr/Log/InvalidArgumentException.php',
         'Psr\\Log\\LogLevel' => __DIR__ . '/..' . '/psr/log/Psr/Log/LogLevel.php',

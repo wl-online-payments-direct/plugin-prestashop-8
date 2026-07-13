@@ -17,6 +17,8 @@ namespace WorldlineOP\PrestaShop\Serializer;
 if (!defined('_PS_VERSION_')) {
     exit;
 }
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -26,9 +28,20 @@ use WorldlineOP\PrestaShop\Configuration\Entity\PaymentMethodsSettings;
 /**
  * Class PaymentMethodsSettingsDenormalizer
  */
-class PaymentMethodsSettingsDenormalizer extends ObjectNormalizer
+class PaymentMethodsSettingsDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
+
+    /** @var ObjectNormalizer */
+    private $objectNormalizer;
+
+    /**
+     * @param ObjectNormalizer $objectNormalizer
+     */
+    public function __construct(ObjectNormalizer $objectNormalizer)
+    {
+        $this->objectNormalizer = $objectNormalizer;
+    }
 
     /**
      * Denormalizes data back into an object of the given class.
@@ -50,7 +63,11 @@ class PaymentMethodsSettingsDenormalizer extends ObjectNormalizer
      */
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        $obj = parent::denormalize($data, $type, $format, $context);
+        $context[AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT] = true;
+        $obj = $this->objectNormalizer->denormalize($data, $type, $format, $context);
+        if (!is_object($obj)) {
+            return $obj;
+        }
         if (isset($data['redirectPaymentMethods'])) {
             $array = [];
             foreach ($data['redirectPaymentMethods'] as $redirectPaymentMethod) {

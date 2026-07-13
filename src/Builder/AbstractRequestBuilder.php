@@ -18,8 +18,6 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-use Context;
-use Country;
 use OnlinePayments\Sdk\Domain\Address;
 use OnlinePayments\Sdk\Domain\AddressPersonal;
 use OnlinePayments\Sdk\Domain\AmountOfMoney;
@@ -35,14 +33,13 @@ use OnlinePayments\Sdk\Domain\PersonalInformation;
 use OnlinePayments\Sdk\Domain\PersonalName;
 use OnlinePayments\Sdk\Domain\RedirectionData;
 use OnlinePayments\Sdk\Domain\RedirectPaymentMethodSpecificInput;
-use OnlinePayments\Sdk\Domain\RedirectPaymentProduct5403SpecificInput;
-use OnlinePayments\Sdk\Domain\RedirectPaymentProduct5402SpecificInput;
 use OnlinePayments\Sdk\Domain\RedirectPaymentProduct3112SpecificInput;
+use OnlinePayments\Sdk\Domain\RedirectPaymentProduct5402SpecificInput;
+use OnlinePayments\Sdk\Domain\RedirectPaymentProduct5403SpecificInput;
 use OnlinePayments\Sdk\Domain\Shipping;
 use OnlinePayments\Sdk\Domain\SurchargeSpecificInput;
 use RandomLib\Factory;
 use SecurityLib\Strength;
-use Worldlineop;
 use WorldlineOP\PrestaShop\Configuration\Entity\PaymentMethodsSettings;
 use WorldlineOP\PrestaShop\Configuration\Entity\PaymentSettings;
 use WorldlineOP\PrestaShop\Configuration\Entity\Settings;
@@ -80,10 +77,10 @@ abstract class AbstractRequestBuilder implements PaymentRequestBuilderInterface
     /** @var Settings */
     protected $settings;
 
-    /** @var Worldlineop */
+    /** @var \Worldlineop */
     protected $module;
 
-    /** @var Context */
+    /** @var \Context */
     protected $context;
 
     /** @var ShoppingCartPresenter */
@@ -92,7 +89,7 @@ abstract class AbstractRequestBuilder implements PaymentRequestBuilderInterface
     /** @var string */
     protected $idProduct;
 
-    /** @var string */
+    /** @var string|false */
     protected $tokenValue;
 
     /** @var array|false */
@@ -102,15 +99,15 @@ abstract class AbstractRequestBuilder implements PaymentRequestBuilderInterface
      * AbstractRequestBuilder constructor.
      *
      * @param Settings $settings
-     * @param Worldlineop $module
-     * @param Context $context
+     * @param \Worldlineop $module
+     * @param \Context $context
      * @param ShoppingCartPresenter $shoppingCartPresenter
      */
     public function __construct(
         Settings $settings,
-        Worldlineop $module,
-        Context $context,
-        ShoppingCartPresenter $shoppingCartPresenter
+        \Worldlineop $module,
+        \Context $context,
+        ShoppingCartPresenter $shoppingCartPresenter,
     ) {
         $this->settings = $settings;
         $this->module = $module;
@@ -146,10 +143,10 @@ abstract class AbstractRequestBuilder implements PaymentRequestBuilderInterface
         if (false !== $this->idProduct) {
             $redirectPaymentMethodSpecificInput->setPaymentProductId($this->idProduct);
         }
-          if ($this->idProduct == self::PRODUCT_ID_MEALVOUCHER
-              || (int) $this->idProduct === self::PRODUCT_ID_CVCO
-              || (int) $this->idProduct === self::PRODUCT_ID_PLEDG
-              || (int) $this->idProduct === self::PRODUCT_ID_ILLICADO) {
+        if ($this->idProduct == self::PRODUCT_ID_MEALVOUCHER
+            || (int) $this->idProduct === self::PRODUCT_ID_CVCO
+            || (int) $this->idProduct === self::PRODUCT_ID_PLEDG
+            || (int) $this->idProduct === self::PRODUCT_ID_ILLICADO) {
             $redirectPaymentMethodSpecificInput->setRequiresApproval(false);
         } else {
             $redirectPaymentMethodSpecificInput->setRequiresApproval(
@@ -243,7 +240,7 @@ abstract class AbstractRequestBuilder implements PaymentRequestBuilderInterface
         $contactDetails->setMobilePhoneNumber(substr(preg_replace('/[^0-9+]/', '', $customerAddress->phone_mobile), 0, self::PHONE_NUMBER_MAX_CHARS));
         $customer->setContactDetails($contactDetails);
         $billingAddress = new Address();
-        $billingAddress->setCountryCode(Country::getIsoById($customerAddress->id_country));
+        $billingAddress->setCountryCode(\Country::getIsoById($customerAddress->id_country));
         $billingAddress->setCity($customerAddress->city);
         $billingAddress->setStreet($customerAddress->address1);
         $billingAddress->setAdditionalInfo($customerAddress->address2);
@@ -275,7 +272,7 @@ abstract class AbstractRequestBuilder implements PaymentRequestBuilderInterface
         $shipping = new Shipping();
         $customerAddress = new \Address((int) $this->context->cart->id_address_delivery);
         $shippingAddress = new AddressPersonal();
-        $shippingAddress->setCountryCode(Country::getIsoById($customerAddress->id_country));
+        $shippingAddress->setCountryCode(\Country::getIsoById($customerAddress->id_country));
         $shippingAddress->setCity($customerAddress->city);
         $shippingAddress->setStreet($customerAddress->address1);
         $shippingAddress->setAdditionalInfo($customerAddress->address2);
@@ -302,7 +299,7 @@ abstract class AbstractRequestBuilder implements PaymentRequestBuilderInterface
     public function buildFeedbacks()
     {
         $feedbacks = new Feedbacks();
-        $webhookMode = $this->settings->accountSettings->webhookMode ?? 'manual';
+        $webhookMode = $this->settings->accountSettings->webhookMode;
         if ($webhookMode !== 'automatic') {
             return $feedbacks;
         }
@@ -317,7 +314,7 @@ abstract class AbstractRequestBuilder implements PaymentRequestBuilderInterface
         );
         $webhookUrls[] = $mainWebhookUrl;
 
-        $additionalWebhooks = $this->settings->accountSettings->additionalWebhookUrls ?? [];
+        $additionalWebhooks = $this->settings->accountSettings->additionalWebhookUrls;
         if (!empty($additionalWebhooks) && is_array($additionalWebhooks)) {
             $webhookUrls = array_merge($webhookUrls, $additionalWebhooks);
         }

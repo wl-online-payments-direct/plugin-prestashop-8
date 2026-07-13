@@ -2,9 +2,9 @@
 <module>
     <name>worldlineop</name>
     <displayName>Worldline Online Payments</displayName>
-    <version>2.0.12</version>
-    <author>PrestaShop partner</author>
-    <description>Worldline Online Payments module for PrestaShop</description>
+    <version>2.0.37</version>
+    <author>Worldline Online Payments</author>
+    <description>This module offers a 1-click integration to start accepting payments and grow your revenues by offering your customers with global and regional payment methods to sell across Europe.</description>
     <tab>payments_gateways</tab>
     <is_configurable>1</is_configurable>
     <need_instance>0</need_instance>

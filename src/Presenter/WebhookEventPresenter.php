@@ -24,7 +24,7 @@ use WorldlineOP\PrestaShop\Logger\LoggerFactory;
 /**
  * Class TransactionPresenter
  */
-class WebhookEventPresenter implements PresenterInterface
+class WebhookEventPresenter
 {
     public const CVCO_PRODUCT_ID = 5403;
     public const MEALVOUCHER_PRODUCT_ID = 5402;
@@ -59,7 +59,7 @@ class WebhookEventPresenter implements PresenterInterface
     public function __construct(
         GetPaymentPresenter $paymentPresenter,
         GetRefundPresenter $refundPresenter,
-        LoggerFactory $loggerFactory
+        LoggerFactory $loggerFactory,
     ) {
         $this->paymentPresenter = $paymentPresenter;
         $this->refundPresenter = $refundPresenter;
@@ -85,15 +85,15 @@ class WebhookEventPresenter implements PresenterInterface
     }
 
     /**
-     * @param WebhooksEvent|bool $event
-     * @param int|bool $idShop
+     * @param WebhooksEvent $event
+     * @param int $idShop
      *
      * @return TransactionPresented
      *
      * @throws \PrestaShopException
      * @throws \PrestaShop\Decimal\Exception\DivisionByZeroException
      */
-    public function present($event = false, $idShop = false)
+    public function present($event, $idShop)
     {
         $paymentEvents = array_merge(
             self::EVENTS_PAYMENT_AUTHORIZED,
@@ -115,6 +115,7 @@ class WebhookEventPresenter implements PresenterInterface
 
     /**
      * @param WebhooksEvent $event
+     *
      * @return bool
      */
     private function shouldHandleEvent($event)

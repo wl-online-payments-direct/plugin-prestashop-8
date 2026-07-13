@@ -31,9 +31,6 @@ class LoggerFactory
     /** @var Logger */
     private $logger;
 
-    /** @var Settings */
-    private $settings;
-
     /**
      * Logger constructor.
      *
@@ -42,7 +39,6 @@ class LoggerFactory
     public function __construct(Settings $settings)
     {
         $this->logger = new Logger('module');
-        $this->settings = $settings;
         $level = $settings->advancedSettings->logsEnabled === true ? Logger::DEBUG : Logger::INFO;
         $fileHandler = new RotatingFileHandler(
             _PS_MODULE_DIR_ . 'worldlineop/' . sprintf('logs/%s.log', Tools::hash(_PS_MODULE_DIR_)),

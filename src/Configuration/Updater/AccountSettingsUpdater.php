@@ -31,7 +31,7 @@ class AccountSettingsUpdater extends SettingsUpdater
         'prodWebhooksSecret',
     ];
 
-    protected function serialize()
+    protected function serializeData()
     {
         $this->json = $this->serializer->serialize($this->settings->accountSettings, 'json');
     }

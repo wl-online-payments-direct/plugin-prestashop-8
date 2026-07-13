@@ -25,9 +25,9 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 class SettingsEncoder extends JsonEncoder
 {
     /**
-     * @param mixed  $data
+     * @param mixed $data
      * @param string $format
-     * @param array  $context
+     * @param array $context
      *
      * @return string
      */

@@ -26,6 +26,7 @@ return array(
     'Symfony\\Component\\Inflector\\' => array($vendorDir . '/symfony/inflector'),
     'Symfony\\Component\\Filesystem\\' => array($vendorDir . '/symfony/filesystem'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
+    'Prestashop\\ModuleLibMboInstaller\\' => array($vendorDir . '/prestashop/module-lib-mbo-installer/src'),
     'PrestaShop\\ModuleLibServiceContainer\\' => array($vendorDir . '/prestashop/module-lib-service-container/src'),
     'PrestaShop\\ModuleLibCacheDirectoryProvider\\' => array($vendorDir . '/prestashop/module-lib-cache-directory-provider/src'),
     'PrestaShop\\Decimal\\' => array($vendorDir . '/prestashop/decimal/src'),

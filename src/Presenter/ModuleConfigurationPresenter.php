@@ -17,8 +17,6 @@ namespace WorldlineOP\PrestaShop\Presenter;
 if (!defined('_PS_VERSION_')) {
     exit;
 }
-use OrderState;
-use Worldlineop;
 use WorldlineOP\PrestaShop\Configuration\Entity\AccountSettings;
 use WorldlineOP\PrestaShop\Configuration\Entity\PaymentSettings;
 use WorldlineOP\PrestaShop\Configuration\Loader\SettingsLoader;
@@ -45,7 +43,7 @@ class ModuleConfigurationPresenter implements PresenterInterface
         'testApiKey',
         'testApiSecret',
         'testWebhooksKey',
-        'testWebhooksSecret'
+        'testWebhooksSecret',
     ];
 
     private const PROD_FIELDS = [
@@ -53,22 +51,22 @@ class ModuleConfigurationPresenter implements PresenterInterface
         'prodApiKey',
         'prodApiSecret',
         'prodWebhooksKey',
-        'prodWebhooksSecret'
+        'prodWebhooksSecret',
     ];
 
     /** @var SettingsLoader */
     private $settingsLoader;
 
-    /** @var Worldlineop */
+    /** @var \Worldlineop */
     private $module;
 
     /**
      * ModuleConfigurationPresenter constructor.
      *
-     * @param Worldlineop $module
+     * @param \Worldlineop $module
      * @param SettingsLoader $settingsLoader
      */
-    public function __construct(Worldlineop $module, SettingsLoader $settingsLoader)
+    public function __construct(\Worldlineop $module, SettingsLoader $settingsLoader)
     {
         $this->module = $module;
         $this->settingsLoader = $settingsLoader;
@@ -90,13 +88,13 @@ class ModuleConfigurationPresenter implements PresenterInterface
                 'module' => sprintf(__PS_BASE_URI__ . 'modules/%s/', $this->module->name),
                 'img' => sprintf(__PS_BASE_URI__ . 'modules/%s/views/img/', $this->module->name),
                 'controllers' => [
-                    'webhooks' => \Context::getContext()->link->getModuleLink($this->module->name, 'webhook', []),
-                    'captureCron' => self::CAPTURE_CRON . \Context::getContext()->link->getModuleLink(
+                    'webhooks' => $this->module->getContext()->link->getModuleLink($this->module->name, 'webhook', []),
+                    'captureCron' => self::CAPTURE_CRON . $this->module->getContext()->link->getModuleLink(
                         $this->module->name,
                         'croncapture',
                         ['secure_key' => Tools::hash($this->module->getLocalPath()), 'ajax' => 1, 'action' => 'runcron']
                     ),
-                    'pendingCron' => self::PENDING_CRON . \Context::getContext()->link->getModuleLink(
+                    'pendingCron' => self::PENDING_CRON . $this->module->getContext()->link->getModuleLink(
                         $this->module->name,
                         'cronpending',
                         ['secure_key' => Tools::hash($this->module->getLocalPath()), 'ajax' => 1, 'action' => 'runcron']
@@ -115,7 +113,7 @@ class ModuleConfigurationPresenter implements PresenterInterface
                 'SAFETY_DELAY_MIN' => PaymentSettings::SAFETY_DELAY_MIN,
                 'SAFETY_DELAY_MAX' => PaymentSettings::SAFETY_DELAY_MAX,
             ],
-            'statuses' => OrderState::getOrderStates(\Context::getContext()->employee->id_lang),
+            'statuses' => \OrderState::getOrderStates($this->module->getContext()->employee->id_lang),
             'defaultStatuses' => \Configuration::getMultiple([
                 'PS_OS_PAYMENT',
                 'WOP_PENDING_ORDER_STATUS_ID',
@@ -166,6 +164,7 @@ class ModuleConfigurationPresenter implements PresenterInterface
 
     /**
      * @param array $settings
+     *
      * @return void
      */
     private function hideSecrets(array &$settings): void
@@ -185,6 +184,7 @@ class ModuleConfigurationPresenter implements PresenterInterface
      * Mask a secret field
      *
      * @param string $input
+     *
      * @return string
      */
     private function maskString(string $input): string

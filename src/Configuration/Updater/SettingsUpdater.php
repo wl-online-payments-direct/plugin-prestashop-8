@@ -17,10 +17,9 @@ namespace WorldlineOP\PrestaShop\Configuration\Updater;
 if (!defined('_PS_VERSION_')) {
     exit;
 }
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
 use WorldlineOP\PrestaShop\Configuration\Entity\Settings;
 use WorldlineOP\PrestaShop\Configuration\Validation\AbstractValidationData;
@@ -38,7 +37,7 @@ abstract class SettingsUpdater
     /** @var Serializer */
     protected $serializer;
 
-    /** @var OptionsResolver */
+    /** @var AbstractSettingsResolver */
     protected $resolver;
 
     /** @var Settings */
@@ -53,7 +52,7 @@ abstract class SettingsUpdater
     /** @var string */
     protected $json;
 
-    /** @var ConstraintViolationList */
+    /** @var ConstraintViolationListInterface */
     private $violations;
 
     /**
@@ -70,7 +69,7 @@ abstract class SettingsUpdater
         AbstractSettingsResolver $resolver,
         Settings $settings,
         AbstractValidationData $validationData,
-        \Worldlineop $module
+        \Worldlineop $module,
     ) {
         $this->serializer = $serializer;
         $this->resolver = $resolver;
@@ -91,7 +90,7 @@ abstract class SettingsUpdater
         $array = $this->resolver->resolve($array);
         $this->validate($array);
         $this->denormalize($array);
-        $this->serialize();
+        $this->serializeData();
         $this->save();
 
         return $this->settings;
@@ -122,7 +121,7 @@ abstract class SettingsUpdater
     }
 
     /**
-     * @return ConstraintViolationList
+     * @return ConstraintViolationListInterface
      */
     public function getViolations()
     {
@@ -139,7 +138,7 @@ abstract class SettingsUpdater
     /**
      * @return void
      */
-    abstract protected function serialize();
+    abstract protected function serializeData();
 
     /**
      * @return void
