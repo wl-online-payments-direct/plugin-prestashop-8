@@ -14,12 +14,11 @@
 
 <h1>
   {l s='What\'s new in version' mod='worldlineop'}
-  2.0.38
+  2.0.39
 </h1>
 <br>
 <ul>
-  <li>{l s='Fixed: Calculate shipping cost for free shipping voucher' mod='worldlineop'}</li>
-  <li>{l s='Fixed: Payments with Mealvouchers method when shipping is not free' mod='worldlineop'}</li>
+  <li>{l s='Fixed: Payment method label lost on capture-confirmation state transition' mod='worldlineop'}</li>
 </ul>
 <br>
 <hr>
